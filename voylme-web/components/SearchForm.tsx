@@ -109,6 +109,10 @@ export default function SearchForm() {
     event: FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault();
+
+    if (activeService === "flights") {
+      window.location.href = "/flights/results";
+    }
   };
 
   const renderServiceTab = (
