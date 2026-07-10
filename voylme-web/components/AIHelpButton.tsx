@@ -1,7 +1,25 @@
+"use client";
+
+import { MessageCircle } from "lucide-react";
+
 export default function AIHelpButton() {
+  const openChat = () => {
+    window.open(
+      "https://wa.me/?text=Hello%20Voylme%2C%20I%20need%20help",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
+
   return (
-    <button className="fixed bottom-5 right-5 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[#660033] text-xl text-white shadow-xl active:scale-95">
-      💬
+    <button
+      type="button"
+      onClick={openChat}
+      aria-label="Open Voylme support chat"
+      title="Voylme Support"
+      className="absolute bottom-[8px] right-[4px] z-20 flex h-[46px] w-[46px] items-center justify-center rounded-full border-2 border-white bg-[#660033] text-white shadow-[0_5px_16px_rgba(50,0,25,0.28)] active:scale-95"
+    >
+      <MessageCircle size={24} strokeWidth={2.2} aria-hidden="true" />
     </button>
   );
 }
