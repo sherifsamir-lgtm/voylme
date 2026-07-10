@@ -1,0 +1,55 @@
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-white">
+      <header className="border-b border-gray-200">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4">
+          <h1 className="text-2xl font-bold text-slate-900">
+            Voylme
+          </h1>
+
+          <button className="rounded-lg bg-teal-500 px-4 py-2 font-semibold text-white">
+            Sign In
+          </button>
+        </div>
+      </header>
+
+      <section className="mx-auto max-w-7xl px-5 py-10">
+        <h2 className="text-4xl font-bold text-slate-900">
+          Search smarter.
+          <br />
+          Travel cheaper.
+        </h2>
+
+        <p className="mt-4 text-gray-600">
+          Compare flights, hotels, cars, yachts and activities in one place.
+        </p>
+
+        <div className="mt-8 flex flex-wrap gap-3">
+          <button className="rounded-full bg-slate-900 px-5 py-2 text-white">
+            ✈ Flights
+          </button>
+
+          <button className="rounded-full border px-5 py-2">
+            🏨 Hotels
+          </button>
+
+          <button className="rounded-full border px-5 py-2">
+            📦 Packages
+          </button>
+
+          <button className="rounded-full border px-5 py-2">
+            🚗 Cars
+          </button>
+
+          <button className="rounded-full border px-5 py-2">
+            🛥 Yachts
+          </button>
+
+          <button className="rounded-full border px-5 py-2">
+            🎟 Activities
+          </button>
+        </div>
+      </section>
+    </main>
+  );
+}
