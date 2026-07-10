@@ -1,0 +1,18 @@
+<svg width="900" height="420" viewBox="0 0 900 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="900" height="420" rx="32" fill="#660033"/>
+<g opacity="0.22">
+<circle cx="560" cy="80" r="2" fill="white"/><circle cx="580" cy="80" r="2" fill="white"/><circle cx="600" cy="80" r="2" fill="white"/>
+<circle cx="540" cy="100" r="2" fill="white"/><circle cx="560" cy="100" r="2" fill="white"/><circle cx="580" cy="100" r="2" fill="white"/><circle cx="600" cy="100" r="2" fill="white"/><circle cx="620" cy="100" r="2" fill="white"/>
+<circle cx="520" cy="120" r="2" fill="white"/><circle cx="540" cy="120" r="2" fill="white"/><circle cx="560" cy="120" r="2" fill="white"/><circle cx="580" cy="120" r="2" fill="white"/><circle cx="600" cy="120" r="2" fill="white"/><circle cx="620" cy="120" r="2" fill="white"/><circle cx="640" cy="120" r="2" fill="white"/>
+<circle cx="620" cy="160" r="2" fill="white"/><circle cx="640" cy="160" r="2" fill="white"/><circle cx="660" cy="160" r="2" fill="white"/><circle cx="680" cy="160" r="2" fill="white"/><circle cx="700" cy="160" r="2" fill="white"/>
+<circle cx="650" cy="200" r="2" fill="white"/><circle cx="670" cy="200" r="2" fill="white"/><circle cx="690" cy="200" r="2" fill="white"/><circle cx="710" cy="200" r="2" fill="white"/>
+</g>
+<path d="M260 300 C390 250 520 250 690 200" stroke="white" stroke-opacity="0.35" stroke-width="3" stroke-dasharray="12 12"/>
+<g transform="translate(570 120) rotate(-18)">
+<path d="M20 100 L250 30 C280 20 300 28 304 44 C308 60 288 74 258 79 L25 132 Z" fill="white"/>
+<path d="M110 82 L55 15 L90 8 L190 68 Z" fill="#E5E7EB"/>
+<path d="M145 98 L78 190 L115 180 L220 88 Z" fill="#E5E7EB"/>
+<path d="M25 113 L0 82 L28 75 L80 105 Z" fill="#F3F4F6"/>
+<circle cx="240" cy="58" r="6" fill="#660033"/>
+</g>
+</svg>
