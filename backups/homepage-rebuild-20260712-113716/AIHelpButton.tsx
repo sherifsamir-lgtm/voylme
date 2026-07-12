@@ -15,9 +15,9 @@ export default function AIHelpButton() {
       }
       aria-label="Open Voylme support chat"
       title="Voylme support"
-      className="home-chat-button"
+      className="fixed bottom-3 right-3 z-[7000] flex h-10 w-10 items-center justify-center rounded-full border-[3px] border-white bg-[#660033] text-white shadow-[0_7px_20px_rgba(69,0,34,0.35)] active:scale-95"
     >
-      <MessageCircle size={19} />
+      <MessageCircle size={18} />
     </button>
   );
 }

@@ -44,6 +44,7 @@ function createEmptyPassenger(
     nationality: "",
     passportNumber: "",
     passportCountry: "",
+    passportIssue: "",
     passportExpiry: "",
     email: "",
     phoneCode: "AE",
@@ -99,7 +100,9 @@ function isPassengerComplete(
     data.nationality !== "" &&
     data.passportNumber.trim() !== "" &&
     data.passportCountry !== "" &&
+    data.passportIssue !== "" &&
     data.passportExpiry !== "" &&
+    data.passportExpiry > data.passportIssue &&
     data.email.trim() !== "" &&
     data.phoneCode !== "" &&
     data.phone.trim() !== ""

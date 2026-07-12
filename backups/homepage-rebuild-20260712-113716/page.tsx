@@ -9,8 +9,8 @@ import SearchForm from "../../components/search/SearchForm";
 
 export default function SearchPage() {
   return (
-    <main className="home-viewport">
-      <div className="home-page">
+    <main className="voylme-home-page">
+      <div className="voylme-home-shell">
         <AppHeader />
 
         <Hero />
@@ -19,7 +19,7 @@ export default function SearchPage() {
 
         <section
           aria-label="Flight search"
-          className="home-search"
+          className="voylme-search-section"
         >
           <SearchForm />
         </section>
