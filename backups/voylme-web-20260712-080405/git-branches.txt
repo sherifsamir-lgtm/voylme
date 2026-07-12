@@ -1,2 +1,0 @@
-* feature/homepage 1d19e0a [origin/feature/homepage] Add professional language and currency selectors
-  main             8745cec [origin/main] Setup Next.js foundation for Voylme

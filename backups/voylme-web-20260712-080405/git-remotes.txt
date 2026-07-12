@@ -1,2 +1,0 @@
-origin	git@github.com:sherifsamir-lgtm/voylme.git (fetch)
-origin	git@github.com:sherifsamir-lgtm/voylme.git (push)
