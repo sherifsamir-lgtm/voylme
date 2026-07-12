@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 135 44">
-  <rect width="135" height="44" rx="8" fill="#fff"/>
-  <rect x=".75" y=".75" width="133.5" height="42.5" rx="7.25" fill="none" stroke="#E2E8F0" stroke-width="1.5"/>
-  <text x="67.5" y="29" text-anchor="middle" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#111">Apple Pay</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130 46">
+  <rect width="130" height="46" rx="9" fill="#fff"/>
+  <rect x=".75" y=".75" width="128.5" height="44.5" rx="8.25" fill="none" stroke="#E3E6EB" stroke-width="1.5"/>
+  <text x="65" y="29" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700" fill="#111">Apple Pay</text>
 </svg>

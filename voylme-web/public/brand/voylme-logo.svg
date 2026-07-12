@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" role="img" aria-labelledby="title description">
+  <title id="title">Voylme</title>
+  <desc id="description">Voylme, Your Personal Travel Assistant</desc>
+
+  <g fill="none" fill-rule="evenodd">
+    <path
+      d="M21 18c14 5 29 20 43 46 11-25 27-43 49-53-8 19-19 39-34 60-5 7-10 14-15 21-7-15-14-29-22-42C34 37 27 26 21 18Z"
+      fill="#660033"
+    />
+
+    <path
+      d="M39 12c10 3 20 8 30 16 12-12 25-20 40-24-13 14-26 29-39 47-9-15-20-28-31-39Z"
+      fill="#8A174D"
+    />
+
+    <path
+      d="M59 78c18-15 38-27 61-35-13 11-28 25-44 42-6 6-12 13-18 20-3-8-2-17 1-27Z"
+      fill="#660033"
+    />
+
+    <text
+      x="116"
+      y="76"
+      font-family="Arial, Helvetica, sans-serif"
+      font-size="68"
+      font-weight="800"
+      letter-spacing="-3"
+      fill="#660033"
+    >
+      Voylme
+    </text>
+
+    <text
+      x="118"
+      y="105"
+      font-family="Arial, Helvetica, sans-serif"
+      font-size="19"
+      font-weight="600"
+      letter-spacing=".15"
+      fill="#660033"
+    >
+      Your Personal Travel Assistant
+    </text>
+  </g>
+</svg>
