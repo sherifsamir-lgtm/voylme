@@ -1,0 +1,7 @@
+commit 1d19e0a68bcf737d850ca67d432f665658390a32
+Author:     Sherif Samir <sherif.samir@gmail.com>
+AuthorDate: Sun Jul 12 07:04:20 2026 +0400
+Commit:     Sherif Samir <sherif.samir@gmail.com>
+CommitDate: Sun Jul 12 07:04:20 2026 +0400
+
+    Add professional language and currency selectors
