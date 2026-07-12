@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MapPin, Plane, Search, X } from "lucide-react";
 import { airports, type Airport } from "./airports";
 
@@ -32,6 +32,17 @@ export default function AirportAutocomplete({
   onClear,
 }: AirportAutocompleteProps) {
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open]);
 
   const filteredAirports = useMemo(() => {
     const searchValue = query.trim().toLowerCase();
@@ -131,8 +142,8 @@ export default function AirportAutocomplete({
             className="fixed inset-0 z-40 cursor-default"
           />
 
-          <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-[340px] overflow-y-auto rounded-[22px] border border-gray-200 bg-white p-2 shadow-2xl">
-            <div className="sticky top-0 flex items-center justify-between bg-white px-3 py-2">
+          <div className="absolute left-0 right-0 top-full z-50 mt-2 max-h-[240px] overflow-y-auto overscroll-contain rounded-[18px] border border-gray-200 bg-white p-2 shadow-2xl">
+            <div className="sticky top-0 z-10 flex items-center justify-between bg-white px-3 py-2">
               <div className="flex items-center gap-2">
                 <Search size={17} className="text-[#660033]" />
 
@@ -159,26 +170,26 @@ export default function AirportAutocomplete({
                     key={airport.code}
                     type="button"
                     onClick={() => handleSelect(airport)}
-                    className={`flex w-full min-w-0 items-center gap-3 rounded-[17px] px-3 py-3 text-left transition ${
+                    className={`flex w-full min-w-0 items-center gap-2.5 rounded-[14px] px-2.5 py-2 text-left transition ${
                       selected
                         ? "bg-[#fff2f8]"
                         : "active:bg-gray-100"
                     }`}
                   >
-                    <span className="text-[24px]">
+                    <span className="text-[20px]">
                       {airport.flag}
                     </span>
 
-                    <span className="flex h-11 w-12 shrink-0 items-center justify-center rounded-[14px] bg-[#f7eaf0] text-sm font-black text-[#660033]">
+                    <span className="flex h-9 w-11 shrink-0 items-center justify-center rounded-[12px] bg-[#f7eaf0] text-xs font-black text-[#660033]">
                       {airport.code}
                     </span>
 
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate font-extrabold">
+                      <span className="block truncate text-sm font-extrabold">
                         {airport.city}, {airport.country}
                       </span>
 
-                      <span className="mt-1 block truncate text-xs text-gray-500">
+                      <span className="mt-0.5 block truncate text-[11px] text-gray-500">
                         {airport.airport}
                       </span>
                     </span>

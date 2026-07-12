@@ -3,23 +3,20 @@
 import { MessageCircle } from "lucide-react";
 
 export default function AIHelpButton() {
-  const openChat = () => {
-    window.open(
-      "https://wa.me/?text=Hello%20Voylme%2C%20I%20need%20help",
-      "_blank",
-      "noopener,noreferrer"
-    );
-  };
-
   return (
     <button
       type="button"
-      onClick={openChat}
-      aria-label="Open Voylme support chat"
-      title="Voylme Support"
-      className="fixed bottom-4 right-4 z-[9999] flex h-[48px] w-[48px] items-center justify-center rounded-full border-2 border-white bg-[#660033] text-white shadow-[0_10px_28px_rgba(50,0,25,0.35)] transition active:scale-95"
+      onClick={() =>
+        window.open(
+          "https://wa.me/?text=Hello%20Voylme%2C%20I%20need%20help",
+          "_blank",
+          "noopener,noreferrer"
+        )
+      }
+      aria-label="Open support chat"
+      className="fixed bottom-[58px] right-3 z-[9999] flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-[#660033] text-white shadow-lg active:scale-95"
     >
-      <MessageCircle size={24} strokeWidth={2.2} aria-hidden="true" />
+      <MessageCircle size={18} />
     </button>
   );
 }

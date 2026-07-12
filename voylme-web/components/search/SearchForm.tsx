@@ -2,342 +2,113 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeftRight, Search } from "lucide-react";
-
-import AirportAutocomplete from "./AirportAutocomplete";
-import DateSelector from "./DateSelector";
-import PassengerSelector, {
-  type PassengerState,
-} from "./PassengerSelector";
-import CabinClassSelector, {
-  type CabinClass,
-} from "./CabinClassSelector";
-import type { Airport } from "./airports";
+import {
+  ArrowLeftRight,
+  CalendarDays,
+  ChevronDown,
+  MapPin,
+  Plane,
+  Search,
+  UsersRound,
+  X,
+} from "lucide-react";
+import { airports, type Airport } from "./airports";
 
 type TripType = "round-trip" | "one-way";
 
-type SearchErrors = {
-  from?: string;
-  to?: string;
-  departure?: string;
-  return?: string;
-  passengers?: string;
-  cabinClass?: string;
-};
-
-type SavedSearch = {
-  tripType: TripType;
-  fromAirport: Airport | null;
-  toAirport: Airport | null;
-  departureDate: string;
-  returnDate: string;
-  passengers: PassengerState;
-  cabinClass: CabinClass;
-};
-
-function getDateAfter(days: number) {
+function dateAfter(days: number) {
   const date = new Date();
   date.setDate(date.getDate() + days);
-
   return date.toISOString().split("T")[0];
 }
 
-function airportLabel(airport: Airport | null) {
-  if (!airport) return "";
-
-  return `${airport.city} (${airport.code})`;
+function label(airport: Airport | null) {
+  return airport ? `${airport.city} (${airport.code})` : "";
 }
 
 export default function SearchForm() {
   const router = useRouter();
 
-  const [tripType, setTripType] =
-    useState<TripType>("round-trip");
-
-  const [fromAirport, setFromAirport] =
-    useState<Airport | null>(null);
-
-  const [toAirport, setToAirport] =
-    useState<Airport | null>(null);
-
+  const [tripType, setTripType] = useState<TripType>("round-trip");
+  const [fromAirport, setFromAirport] = useState<Airport | null>(null);
+  const [toAirport, setToAirport] = useState<Airport | null>(null);
   const [fromQuery, setFromQuery] = useState("");
   const [toQuery, setToQuery] = useState("");
-
-  const [departureDate, setDepartureDate] = useState(
-    getDateAfter(7)
-  );
-
-  const [returnDate, setReturnDate] = useState(
-    getDateAfter(14)
-  );
-
-  const [passengers, setPassengers] =
-    useState<PassengerState>({
-      adults: 1,
-      children: 0,
-      infants: 0,
-    });
-
-  const [cabinClass, setCabinClass] =
-    useState<CabinClass>("Economy");
-
-  const [passengersOpen, setPassengersOpen] =
-    useState(false);
-
-  const [cabinClassOpen, setCabinClassOpen] =
-    useState(false);
-
-  const [errors, setErrors] =
-    useState<SearchErrors>({});
-
-  const [loaded, setLoaded] = useState(false);
-
-  const today = new Date().toISOString().split("T")[0];
+  const [activeField, setActiveField] = useState<"from" | "to" | null>(null);
+  const [departureDate, setDepartureDate] = useState(dateAfter(7));
+  const [returnDate, setReturnDate] = useState(dateAfter(14));
+  const [passengers, setPassengers] = useState(1);
+  const [cabinClass, setCabinClass] = useState("Economy");
 
   useEffect(() => {
     try {
-      const savedSearch = localStorage.getItem(
-        "voylme-flight-search"
-      );
+      const stored = localStorage.getItem("voylme-flight-search");
 
-      if (!savedSearch) {
-        setLoaded(true);
-        return;
-      }
+      if (!stored) return;
 
-      const saved = JSON.parse(
-        savedSearch
-      ) as Partial<SavedSearch>;
-
-      if (saved.tripType) {
-        setTripType(saved.tripType);
-      }
+      const saved = JSON.parse(stored);
 
       if (saved.fromAirport) {
         setFromAirport(saved.fromAirport);
-        setFromQuery(airportLabel(saved.fromAirport));
+        setFromQuery(label(saved.fromAirport));
       }
 
       if (saved.toAirport) {
         setToAirport(saved.toAirport);
-        setToQuery(airportLabel(saved.toAirport));
+        setToQuery(label(saved.toAirport));
       }
 
-      if (saved.departureDate) {
-        setDepartureDate(saved.departureDate);
-      }
-
-      if (saved.returnDate) {
-        setReturnDate(saved.returnDate);
-      }
-
-      if (saved.passengers) {
-        setPassengers(saved.passengers);
-      }
-
-      if (saved.cabinClass) {
-        setCabinClass(saved.cabinClass);
-      }
+      if (saved.tripType) setTripType(saved.tripType);
+      if (saved.departureDate) setDepartureDate(saved.departureDate);
+      if (saved.returnDate) setReturnDate(saved.returnDate);
+      if (saved.passengers?.adults) setPassengers(saved.passengers.adults);
+      if (saved.cabinClass) setCabinClass(saved.cabinClass);
     } catch {
       localStorage.removeItem("voylme-flight-search");
-    } finally {
-      setLoaded(true);
     }
   }, []);
 
-  useEffect(() => {
-    if (!loaded) return;
+  const filteredAirports = airports
+    .filter((airport) => {
+      const query =
+        activeField === "from"
+          ? fromQuery.toLowerCase()
+          : toQuery.toLowerCase();
 
-    const searchData: SavedSearch = {
-      tripType,
-      fromAirport,
-      toAirport,
-      departureDate,
-      returnDate,
-      passengers,
-      cabinClass,
-    };
+      return [
+        airport.city,
+        airport.code,
+        airport.country,
+        airport.airport,
+      ]
+        .join(" ")
+        .toLowerCase()
+        .includes(query);
+    })
+    .slice(0, 5);
 
-    localStorage.setItem(
-      "voylme-flight-search",
-      JSON.stringify(searchData)
-    );
-  }, [
-    loaded,
-    tripType,
-    fromAirport,
-    toAirport,
-    departureDate,
-    returnDate,
-    passengers,
-    cabinClass,
-  ]);
-
-  function selectFromAirport(airport: Airport) {
-    setFromAirport(airport);
-    setFromQuery(airportLabel(airport));
-
-    setErrors((current) => ({
-      ...current,
-      from: undefined,
-      to:
-        airport.code === toAirport?.code
-          ? "Departure and arrival airports cannot be the same."
-          : current.to,
-    }));
-  }
-
-  function selectToAirport(airport: Airport) {
-    setToAirport(airport);
-    setToQuery(airportLabel(airport));
-
-    setErrors((current) => ({
-      ...current,
-      to:
-        airport.code === fromAirport?.code
-          ? "Departure and arrival airports cannot be the same."
-          : undefined,
-    }));
-  }
-
-  function clearFromAirport() {
-    setFromAirport(null);
-    setFromQuery("");
-
-    setErrors((current) => ({
-      ...current,
-      from: undefined,
-    }));
-  }
-
-  function clearToAirport() {
-    setToAirport(null);
-    setToQuery("");
-
-    setErrors((current) => ({
-      ...current,
-      to: undefined,
-    }));
-  }
-
-  function swapAirports() {
-    const previousFromAirport = fromAirport;
-    const previousFromQuery = fromQuery;
-
+  function swap() {
     setFromAirport(toAirport);
-    setFromQuery(toQuery);
-
-    setToAirport(previousFromAirport);
-    setToQuery(previousFromQuery);
-
-    setErrors((current) => ({
-      ...current,
-      from: undefined,
-      to: undefined,
-    }));
+    setFromQuery(label(toAirport));
+    setToAirport(fromAirport);
+    setToQuery(label(fromAirport));
   }
 
-  function changeDepartureDate(value: string) {
-    setDepartureDate(value);
-
-    if (
-      tripType === "round-trip" &&
-      returnDate &&
-      value >= returnDate
-    ) {
-      const nextReturnDate = new Date(
-        `${value}T12:00:00`
-      );
-
-      nextReturnDate.setDate(
-        nextReturnDate.getDate() + 1
-      );
-
-      setReturnDate(
-        nextReturnDate.toISOString().split("T")[0]
-      );
-    }
-
-    setErrors((current) => ({
-      ...current,
-      departure: undefined,
-      return: undefined,
-    }));
-  }
-
-  function validateForm() {
-    const nextErrors: SearchErrors = {};
-
-    if (!fromAirport) {
-      nextErrors.from =
-        "Please select your departure airport.";
-    }
-
-    if (!toAirport) {
-      nextErrors.to =
-        "Please select your arrival airport.";
-    }
-
-    if (
-      fromAirport &&
-      toAirport &&
-      fromAirport.code === toAirport.code
-    ) {
-      nextErrors.to =
-        "Departure and arrival airports cannot be the same.";
-    }
-
-    if (!departureDate) {
-      nextErrors.departure =
-        "Please select your departure date.";
-    } else if (departureDate < today) {
-      nextErrors.departure =
-        "Departure date cannot be in the past.";
-    }
-
-    if (tripType === "round-trip") {
-      if (!returnDate) {
-        nextErrors.return =
-          "Please select your return date.";
-      } else if (returnDate <= departureDate) {
-        nextErrors.return =
-          "Return date must be after the departure date.";
-      }
-    }
-
-    if (passengers.adults < 1) {
-      nextErrors.passengers =
-        "At least one adult passenger is required.";
-    }
-
-    if (passengers.infants > passengers.adults) {
-      nextErrors.passengers =
-        "Each infant must travel with an adult.";
-    }
-
-    setErrors(nextErrors);
-
-    return Object.keys(nextErrors).length === 0;
-  }
-
-  function handleSearch(event: FormEvent<HTMLFormElement>) {
+  function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!validateForm()) return;
     if (!fromAirport || !toAirport) return;
 
     const params = new URLSearchParams({
       tripType,
       from: fromAirport.code,
       fromCity: fromAirport.city,
-      fromAirport: fromAirport.airport,
       to: toAirport.code,
       toCity: toAirport.city,
-      toAirport: toAirport.airport,
       departureDate,
-      adults: String(passengers.adults),
-      children: String(passengers.children),
-      infants: String(passengers.infants),
+      adults: String(passengers),
+      children: "0",
+      infants: "0",
       cabinClass,
     });
 
@@ -350,24 +121,16 @@ export default function SearchForm() {
 
   return (
     <form
-      onSubmit={handleSearch}
-      noValidate
-      className="w-full rounded-[28px] bg-white p-3.5 shadow-[0_14px_38px_rgba(65,0,32,0.15)]"
+      onSubmit={submit}
+      className="rounded-[18px] bg-white p-2.5 shadow-sm"
     >
-      <div className="grid grid-cols-2 rounded-[18px] bg-[#f5f1f3] p-1">
+      <div className="grid grid-cols-2 rounded-[13px] bg-[#f4f0f2] p-1">
         <button
           type="button"
-          onClick={() => {
-            setTripType("round-trip");
-
-            setErrors((current) => ({
-              ...current,
-              return: undefined,
-            }));
-          }}
-          className={`h-12 rounded-[15px] text-sm font-extrabold transition ${
+          onClick={() => setTripType("round-trip")}
+          className={`h-8 rounded-[10px] text-[11px] font-extrabold ${
             tripType === "round-trip"
-              ? "bg-[#660033] text-white shadow"
+              ? "bg-[#660033] text-white"
               : "text-gray-600"
           }`}
         >
@@ -376,17 +139,10 @@ export default function SearchForm() {
 
         <button
           type="button"
-          onClick={() => {
-            setTripType("one-way");
-
-            setErrors((current) => ({
-              ...current,
-              return: undefined,
-            }));
-          }}
-          className={`h-12 rounded-[15px] text-sm font-extrabold transition ${
+          onClick={() => setTripType("one-way")}
+          className={`h-8 rounded-[10px] text-[11px] font-extrabold ${
             tripType === "one-way"
-              ? "bg-[#660033] text-white shadow"
+              ? "bg-[#660033] text-white"
               : "text-gray-600"
           }`}
         >
@@ -394,141 +150,186 @@ export default function SearchForm() {
         </button>
       </div>
 
-      <div className="relative mt-4 space-y-2.5">
-        <AirportAutocomplete
-          id="from-airport"
-          label="From"
-          placeholder="City or airport"
-          type="departure"
-          value={fromAirport}
-          query={fromQuery}
-          excludedAirportCode={toAirport?.code}
-          error={errors.from}
-          onQueryChange={(value) => {
-            setFromQuery(value);
-            setFromAirport(null);
+      <div className="relative mt-2 grid grid-cols-2 gap-2">
+        <div className="relative">
+          <Plane
+            size={16}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#660033]"
+          />
 
-            setErrors((current) => ({
-              ...current,
-              from: undefined,
-            }));
-          }}
-          onSelect={selectFromAirport}
-          onClear={clearFromAirport}
-        />
+          <input
+            value={fromQuery}
+            placeholder="From"
+            onFocus={() => setActiveField("from")}
+            onChange={(event) => {
+              setFromQuery(event.target.value);
+              setFromAirport(null);
+              setActiveField("from");
+            }}
+            className="h-11 w-full rounded-[13px] border border-gray-200 pl-9 pr-7 text-[12px] font-bold outline-none focus:border-[#660033]"
+          />
+
+          {fromQuery && (
+            <button
+              type="button"
+              onClick={() => {
+                setFromQuery("");
+                setFromAirport(null);
+              }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400"
+            >
+              <X size={15} />
+            </button>
+          )}
+        </div>
+
+        <div className="relative">
+          <MapPin
+            size={16}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#660033]"
+          />
+
+          <input
+            value={toQuery}
+            placeholder="To"
+            onFocus={() => setActiveField("to")}
+            onChange={(event) => {
+              setToQuery(event.target.value);
+              setToAirport(null);
+              setActiveField("to");
+            }}
+            className="h-11 w-full rounded-[13px] border border-gray-200 pl-9 pr-7 text-[12px] font-bold outline-none focus:border-[#660033]"
+          />
+
+          {toQuery && (
+            <button
+              type="button"
+              onClick={() => {
+                setToQuery("");
+                setToAirport(null);
+              }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400"
+            >
+              <X size={15} />
+            </button>
+          )}
+        </div>
 
         <button
           type="button"
-          onClick={swapAirports}
-          aria-label="Swap airports"
-          className="absolute right-4 top-[72px] z-30 flex h-10 w-10 items-center justify-center rounded-full border-[3px] border-white bg-[#660033] text-white shadow-lg"
+          onClick={swap}
+          className="absolute left-1/2 top-1/2 z-20 flex h-7 w-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-[#660033] text-white shadow"
         >
-          <ArrowLeftRight size={19} />
+          <ArrowLeftRight size={14} />
         </button>
 
-        <AirportAutocomplete
-          id="to-airport"
-          label="To"
-          placeholder="City or airport"
-          type="arrival"
-          value={toAirport}
-          query={toQuery}
-          excludedAirportCode={fromAirport?.code}
-          error={errors.to}
-          onQueryChange={(value) => {
-            setToQuery(value);
-            setToAirport(null);
+        {activeField && (
+          <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[175px] overflow-y-auto rounded-[14px] border border-gray-200 bg-white p-1.5 shadow-xl">
+            {filteredAirports.map((airport) => (
+              <button
+                key={airport.code}
+                type="button"
+                onClick={() => {
+                  if (activeField === "from") {
+                    setFromAirport(airport);
+                    setFromQuery(label(airport));
+                  } else {
+                    setToAirport(airport);
+                    setToQuery(label(airport));
+                  }
 
-            setErrors((current) => ({
-              ...current,
-              to: undefined,
-            }));
-          }}
-          onSelect={selectToAirport}
-          onClear={clearToAirport}
-        />
-      </div>
+                  setActiveField(null);
+                }}
+                className="flex w-full items-center gap-2 rounded-[10px] px-2 py-2 text-left active:bg-gray-100"
+              >
+                <span className="text-base">{airport.flag}</span>
 
-      <div
-        className={`mt-4 grid gap-2.5 ${
-          tripType === "round-trip"
-            ? "grid-cols-2"
-            : "grid-cols-1"
-        }`}
-      >
-        <DateSelector
-          id="departure-date"
-          label="Departure"
-          value={departureDate}
-          min={today}
-          error={errors.departure}
-          onChange={changeDepartureDate}
-        />
+                <span className="flex h-7 w-10 items-center justify-center rounded-lg bg-[#fff0f6] text-[10px] font-black text-[#660033]">
+                  {airport.code}
+                </span>
 
-        {tripType === "round-trip" && (
-          <DateSelector
-            id="return-date"
-            label="Return"
-            value={returnDate}
-            min={departureDate || today}
-            error={errors.return}
-            onChange={(value) => {
-              setReturnDate(value);
-
-              setErrors((current) => ({
-                ...current,
-                return: undefined,
-              }));
-            }}
-          />
+                <span className="min-w-0 flex-1 truncate text-[11px] font-bold">
+                  {airport.city}, {airport.country}
+                </span>
+              </button>
+            ))}
+          </div>
         )}
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-2.5">
-        <PassengerSelector
-          value={passengers}
-          open={passengersOpen}
-          error={errors.passengers}
-          onOpen={() => setPassengersOpen(true)}
-          onClose={() => setPassengersOpen(false)}
-          onChange={(value) => {
-            setPassengers(value);
+      <div className="mt-2 grid grid-cols-2 gap-2">
+        <label className="relative flex h-11 items-center gap-2 rounded-[13px] border border-gray-200 px-3">
+          <CalendarDays size={16} className="text-[#660033]" />
 
-            setErrors((current) => ({
-              ...current,
-              passengers: undefined,
-            }));
-          }}
-        />
+          <input
+            type="date"
+            value={departureDate}
+            onChange={(event) => setDepartureDate(event.target.value)}
+            className="min-w-0 flex-1 bg-transparent text-[10px] font-bold outline-none"
+          />
+        </label>
 
-        <CabinClassSelector
-          value={cabinClass}
-          open={cabinClassOpen}
-          error={errors.cabinClass}
-          onOpen={() => setCabinClassOpen(true)}
-          onClose={() => setCabinClassOpen(false)}
-          onChange={(value) => {
-            setCabinClass(value);
+        {tripType === "round-trip" ? (
+          <label className="relative flex h-11 items-center gap-2 rounded-[13px] border border-gray-200 px-3">
+            <CalendarDays size={16} className="text-[#660033]" />
 
-            setErrors((current) => ({
-              ...current,
-              cabinClass: undefined,
-            }));
-          }}
-        />
+            <input
+              type="date"
+              value={returnDate}
+              min={departureDate}
+              onChange={(event) => setReturnDate(event.target.value)}
+              className="min-w-0 flex-1 bg-transparent text-[10px] font-bold outline-none"
+            />
+          </label>
+        ) : (
+          <div className="flex h-11 items-center justify-center rounded-[13px] border border-dashed border-gray-200 text-[10px] text-gray-400">
+            One-way flight
+          </div>
+        )}
+      </div>
+
+      <div className="mt-2 grid grid-cols-2 gap-2">
+        <label className="flex h-11 items-center gap-2 rounded-[13px] border border-gray-200 px-3">
+          <UsersRound size={16} className="text-[#660033]" />
+
+          <select
+            value={passengers}
+            onChange={(event) => setPassengers(Number(event.target.value))}
+            className="min-w-0 flex-1 bg-transparent text-[11px] font-bold outline-none"
+          >
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((number) => (
+              <option key={number} value={number}>
+                {number} {number === 1 ? "Passenger" : "Passengers"}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="flex h-11 items-center gap-2 rounded-[13px] border border-gray-200 px-3">
+          <Plane size={16} className="text-[#660033]" />
+
+          <select
+            value={cabinClass}
+            onChange={(event) => setCabinClass(event.target.value)}
+            className="min-w-0 flex-1 bg-transparent text-[11px] font-bold outline-none"
+          >
+            <option>Economy</option>
+            <option>Premium Economy</option>
+            <option>Business</option>
+            <option>First</option>
+          </select>
+
+          <ChevronDown size={14} className="text-gray-400" />
+        </label>
       </div>
 
       <button
         type="submit"
-        className="mt-5 flex h-14 w-full items-center justify-center gap-2 rounded-[20px] bg-[#660033] text-[17px] font-extrabold text-white shadow-lg active:scale-[0.99]"
+        className="mt-2 flex h-11 w-full items-center justify-center gap-2 rounded-[14px] bg-[#660033] text-[14px] font-extrabold text-white shadow"
       >
-        <Search size={21} />
+        <Search size={17} />
         Search Flights
       </button>
-
-      <p className="mt-3 text-center text-xs leading-5 text-gray-500">
-        Compare flight prices from trusted travel partners.
-      </p>
     </form>
   );
 }
