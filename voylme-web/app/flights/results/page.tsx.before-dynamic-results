@@ -1,59 +1,46 @@
 "use client";
 
-import {
-  Suspense,
-  useMemo,
-  useState,
-} from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
-  ChevronDown,
+  SlidersHorizontal,
+  Plane,
   Clock3,
   Luggage,
-  Plane,
-  SlidersHorizontal,
+  ChevronDown,
 } from "lucide-react";
 
 type SortOption = "best" | "cheapest" | "fastest";
 
-type FlightTemplate = {
+type Flight = {
   id: number;
   airline: string;
   code: string;
   departureTime: string;
   arrivalTime: string;
+  from: string;
+  to: string;
   duration: string;
-  durationMinutes: number;
   stops: string;
   baggage: string;
-  baseFare: number;
-  taxes: number;
-  serviceFee: number;
+  price: number;
   recommended?: boolean;
 };
 
-type Flight = FlightTemplate & {
-  from: string;
-  to: string;
-  total: number;
-};
-
-const flightTemplates: FlightTemplate[] = [
+const flights: Flight[] = [
   {
     id: 1,
     airline: "Emirates",
     code: "EK 927",
     departureTime: "08:15",
     arrivalTime: "10:25",
+    from: "DXB",
+    to: "CAI",
     duration: "4h 10m",
-    durationMinutes: 250,
     stops: "Direct",
     baggage: "25 kg",
-    baseFare: 995,
-    taxes: 200,
-    serviceFee: 50,
+    price: 1245,
     recommended: true,
   },
   {
@@ -62,13 +49,12 @@ const flightTemplates: FlightTemplate[] = [
     code: "MS 911",
     departureTime: "11:30",
     arrivalTime: "13:50",
+    from: "DXB",
+    to: "CAI",
     duration: "4h 20m",
-    durationMinutes: 260,
     stops: "Direct",
     baggage: "23 kg",
-    baseFare: 880,
-    taxes: 165,
-    serviceFee: 50,
+    price: 1095,
   },
   {
     id: 3,
@@ -76,13 +62,12 @@ const flightTemplates: FlightTemplate[] = [
     code: "QR 1007",
     departureTime: "14:10",
     arrivalTime: "18:45",
+    from: "DXB",
+    to: "CAI",
     duration: "6h 35m",
-    durationMinutes: 395,
     stops: "1 stop",
     baggage: "25 kg",
-    baseFare: 930,
-    taxes: 200,
-    serviceFee: 50,
+    price: 1180,
   },
   {
     id: 4,
@@ -90,167 +75,41 @@ const flightTemplates: FlightTemplate[] = [
     code: "EY 655",
     departureTime: "18:25",
     arrivalTime: "20:40",
+    from: "AUH",
+    to: "CAI",
     duration: "4h 15m",
-    durationMinutes: 255,
     stops: "Direct",
     baggage: "23 kg",
-    baseFare: 1050,
-    taxes: 220,
-    serviceFee: 50,
+    price: 1320,
   },
 ];
 
-function formatSearchDate(value: string | null) {
-  if (!value) return "Select date";
+export default function FlightResultsPage() {
+  const [sortBy, setSortBy] = useState<SortOption>("best");
+  const [showFilters, setShowFilters] = useState(false);
 
-  const date = new Date(`${value}T12:00:00`);
-
-  if (Number.isNaN(date.getTime())) {
-    return value;
-  }
-
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  }).format(date);
-}
-
-function passengerText(
-  adults: number,
-  children: number,
-  infants: number
-) {
-  const total = adults + children + infants;
-
-  return `${total} ${
-    total === 1 ? "passenger" : "passengers"
-  }`;
-}
-
-function FlightResultsContent() {
-  const searchParams = useSearchParams();
-
-  const [sortBy, setSortBy] =
-    useState<SortOption>("best");
-
-  const [showFilters, setShowFilters] =
-    useState(false);
-
-  const from =
-    searchParams.get("from")?.toUpperCase() || "DXB";
-
-  const to =
-    searchParams.get("to")?.toUpperCase() || "CAI";
-
-  const fromCity =
-    searchParams.get("fromCity") || from;
-
-  const toCity =
-    searchParams.get("toCity") || to;
-
-  const departureDate =
-    searchParams.get("departureDate");
-
-  const returnDate =
-    searchParams.get("returnDate");
-
-  const tripType =
-    searchParams.get("tripType") || "one-way";
-
-  const adults = Math.max(
-    1,
-    Number(searchParams.get("adults") || "1")
-  );
-
-  const children = Math.max(
-    0,
-    Number(searchParams.get("children") || "0")
-  );
-
-  const infants = Math.max(
-    0,
-    Number(searchParams.get("infants") || "0")
-  );
-
-  const cabinClass =
-    searchParams.get("cabinClass") || "Economy";
-
-  const flights = useMemo<Flight[]>(
-    () =>
-      flightTemplates.map((flight) => ({
-        ...flight,
-        from,
-        to,
-        total:
-          flight.baseFare +
-          flight.taxes +
-          flight.serviceFee,
-      })),
-    [from, to]
-  );
-
-  const sortedFlights = useMemo(() => {
-    return [...flights].sort((a, b) => {
-      if (sortBy === "cheapest") {
-        return a.total - b.total;
-      }
-
-      if (sortBy === "fastest") {
-        return (
-          a.durationMinutes - b.durationMinutes
-        );
-      }
-
-      return (
-        Number(Boolean(b.recommended)) -
-        Number(Boolean(a.recommended))
-      );
-    });
-  }, [flights, sortBy]);
-
-  function createFlightDetailsUrl(flight: Flight) {
-    const params = new URLSearchParams({
-      tripType,
-      from,
-      fromCity,
-      to,
-      toCity,
-      departureDate: departureDate || "",
-      adults: String(adults),
-      children: String(children),
-      infants: String(infants),
-      cabinClass,
-      airline: flight.airline,
-      flightCode: flight.code,
-      departureTime: flight.departureTime,
-      arrivalTime: flight.arrivalTime,
-      duration: flight.duration,
-      stops: flight.stops,
-      baggage: flight.baggage,
-      baseFare: String(flight.baseFare),
-      taxes: String(flight.taxes),
-      serviceFee: String(flight.serviceFee),
-      total: String(flight.total),
-    });
-
-    if (tripType === "round-trip" && returnDate) {
-      params.set("returnDate", returnDate);
+  const sortedFlights = [...flights].sort((a, b) => {
+    if (sortBy === "cheapest") {
+      return a.price - b.price;
     }
 
-    return `/flights/results/${flight.id}?${params.toString()}`;
-  }
+    if (sortBy === "fastest") {
+      return (
+        Number.parseInt(a.duration) -
+        Number.parseInt(b.duration)
+      );
+    }
 
-  const editSearchParams =
-    searchParams.toString();
+    return Number(b.recommended) - Number(a.recommended);
+  });
 
   return (
     <main className="min-h-screen bg-[#f7f5f6] pb-8">
       <header className="sticky top-0 z-40 border-b border-gray-200 bg-white">
         <div className="mx-auto flex h-[68px] w-full max-w-[430px] items-center justify-between px-4">
           <Link
-            href={`/search${editSearchParams ? `?${editSearchParams}` : ""}`}
-            aria-label="Back to search"
+            href="/"
+            aria-label="Back to homepage"
             className="flex h-10 w-10 items-center justify-center rounded-full border border-[#660033]/20 text-[#660033]"
           >
             <ArrowLeft size={21} />
@@ -262,15 +121,13 @@ function FlightResultsContent() {
             </h1>
 
             <p className="text-[11px] text-gray-500">
-              {fromCity} to {toCity}
+              Dubai to Cairo
             </p>
           </div>
 
           <button
             type="button"
-            onClick={() =>
-              setShowFilters((current) => !current)
-            }
+            onClick={() => setShowFilters((current) => !current)}
             aria-label="Open filters"
             className="flex h-10 w-10 items-center justify-center rounded-full bg-[#660033] text-white"
           >
@@ -281,31 +138,24 @@ function FlightResultsContent() {
 
       <div className="mx-auto w-full max-w-[430px] px-4 pt-4">
         <section className="rounded-[22px] bg-[#660033] p-4 text-white shadow-md">
-          <div className="flex items-center justify-between gap-3">
-            <div className="min-w-0">
+          <div className="flex items-center justify-between">
+            <div>
               <p className="text-[11px] text-white/75">
                 Your search
               </p>
 
-              <p className="mt-1 truncate text-[16px] font-bold">
-                {from} → {to}
+              <p className="mt-1 text-[16px] font-bold">
+                DXB → CAI
               </p>
 
-              <p className="mt-1 text-[11px] leading-5 text-white/80">
-                {formatSearchDate(departureDate)}
-                {tripType === "round-trip" && returnDate
-                  ? ` · Return ${formatSearchDate(returnDate)}`
-                  : ""}
-                {" · "}
-                {passengerText(adults, children, infants)}
-                {" · "}
-                {cabinClass}
+              <p className="mt-1 text-[11px] text-white/80">
+                12 Aug · 1 passenger · Economy
               </p>
             </div>
 
             <Link
-              href={`/search${editSearchParams ? `?${editSearchParams}` : ""}`}
-              className="shrink-0 rounded-full border border-white/40 px-4 py-2 text-[12px] font-bold"
+              href="/"
+              className="rounded-full border border-white/40 px-4 py-2 text-[12px] font-bold"
             >
               Edit
             </Link>
@@ -361,36 +211,50 @@ function FlightResultsContent() {
         )}
 
         <section className="mt-4 grid grid-cols-3 gap-2">
-          {[
-            {
-              value: "best" as const,
-              label: "Best",
-            },
-            {
-              value: "cheapest" as const,
-              label: "Cheapest",
-            },
-            {
-              value: "fastest" as const,
-              label: "Fastest",
-            },
-          ].map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              onClick={() => setSortBy(option.value)}
-              className={[
-                "rounded-[16px] border px-2 py-3 text-center transition",
-                sortBy === option.value
-                  ? "border-[#660033] bg-[#660033] text-white"
-                  : "border-gray-200 bg-white text-[#660033]",
-              ].join(" ")}
-            >
-              <span className="block text-[12px] font-bold">
-                {option.label}
-              </span>
-            </button>
-          ))}
+          <button
+            type="button"
+            onClick={() => setSortBy("best")}
+            className={[
+              "rounded-[16px] border px-2 py-3 text-center transition",
+              sortBy === "best"
+                ? "border-[#660033] bg-[#660033] text-white"
+                : "border-gray-200 bg-white text-[#660033]",
+            ].join(" ")}
+          >
+            <span className="block text-[12px] font-bold">
+              Best
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setSortBy("cheapest")}
+            className={[
+              "rounded-[16px] border px-2 py-3 text-center transition",
+              sortBy === "cheapest"
+                ? "border-[#660033] bg-[#660033] text-white"
+                : "border-gray-200 bg-white text-[#660033]",
+            ].join(" ")}
+          >
+            <span className="block text-[12px] font-bold">
+              Cheapest
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setSortBy("fastest")}
+            className={[
+              "rounded-[16px] border px-2 py-3 text-center transition",
+              sortBy === "fastest"
+                ? "border-[#660033] bg-[#660033] text-white"
+                : "border-gray-200 bg-white text-[#660033]",
+            ].join(" ")}
+          >
+            <span className="block text-[12px] font-bold">
+              Fastest
+            </span>
+          </button>
         </section>
 
         <div className="mt-4 flex items-center justify-between">
@@ -420,14 +284,14 @@ function FlightResultsContent() {
               )}
 
               <div className="p-4">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex min-w-0 items-center gap-3">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#660033]/10 text-[#660033]">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#660033]/10 text-[#660033]">
                       <Plane size={21} />
                     </div>
 
-                    <div className="min-w-0">
-                      <h2 className="truncate text-[14px] font-bold text-slate-900">
+                    <div>
+                      <h2 className="text-[14px] font-bold text-slate-900">
                         {flight.airline}
                       </h2>
 
@@ -437,13 +301,13 @@ function FlightResultsContent() {
                     </div>
                   </div>
 
-                  <div className="shrink-0 text-right">
+                  <div className="text-right">
                     <p className="text-[10px] text-gray-500">
-                      Total
+                      From
                     </p>
 
                     <p className="text-[20px] font-black text-[#660033]">
-                      AED {flight.total}
+                      AED {flight.price}
                     </p>
                   </div>
                 </div>
@@ -466,12 +330,10 @@ function FlightResultsContent() {
 
                     <div className="relative h-[1px] bg-gray-300">
                       <span className="absolute -left-1 -top-[3px] h-2 w-2 rounded-full bg-[#660033]" />
-
                       <Plane
                         size={13}
                         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white text-[#660033]"
                       />
-
                       <span className="absolute -right-1 -top-[3px] h-2 w-2 rounded-full bg-[#660033]" />
                     </div>
 
@@ -491,58 +353,20 @@ function FlightResultsContent() {
                   </div>
                 </div>
 
-                <div className="mt-4 grid grid-cols-3 gap-2 rounded-[16px] bg-[#faf7f9] p-3 text-center">
-                  <div>
-                    <p className="text-[10px] text-gray-500">
-                      Base fare
-                    </p>
-
-                    <p className="mt-1 text-[12px] font-bold text-slate-800">
-                      AED {flight.baseFare}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-[10px] text-gray-500">
-                      Taxes
-                    </p>
-
-                    <p className="mt-1 text-[12px] font-bold text-slate-800">
-                      AED {flight.taxes}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-[10px] text-gray-500">
-                      Service
-                    </p>
-
-                    <p className="mt-1 text-[12px] font-bold text-slate-800">
-                      AED {flight.serviceFee}
-                    </p>
-                  </div>
-                </div>
-
                 <div className="mt-4 flex items-center gap-4 border-t border-gray-100 pt-3 text-[11px] text-gray-600">
                   <span className="flex items-center gap-1">
-                    <Clock3
-                      size={14}
-                      className="text-[#660033]"
-                    />
+                    <Clock3 size={14} className="text-[#660033]" />
                     {flight.duration}
                   </span>
 
                   <span className="flex items-center gap-1">
-                    <Luggage
-                      size={14}
-                      className="text-[#660033]"
-                    />
+                    <Luggage size={14} className="text-[#660033]" />
                     {flight.baggage}
                   </span>
                 </div>
 
                 <Link
-                  href={createFlightDetailsUrl(flight)}
+                  href={`/flights/results/${flight.id}`}
                   className="mt-4 flex h-[48px] w-full items-center justify-center rounded-full bg-[#660033] text-[14px] font-bold text-white"
                 >
                   Select Flight
@@ -553,21 +377,5 @@ function FlightResultsContent() {
         </section>
       </div>
     </main>
-  );
-}
-
-export default function FlightResultsPage() {
-  return (
-    <Suspense
-      fallback={
-        <main className="flex min-h-screen items-center justify-center bg-[#f7f5f6]">
-          <p className="font-bold text-[#660033]">
-            Loading flight results...
-          </p>
-        </main>
-      }
-    >
-      <FlightResultsContent />
-    </Suspense>
   );
 }
