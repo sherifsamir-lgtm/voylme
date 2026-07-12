@@ -77,7 +77,7 @@ export default function AirportAutocomplete({
       </label>
 
       <div
-        className={`flex h-[68px] w-full min-w-0 items-center gap-3 rounded-[20px] border bg-white px-4 transition ${
+        className={`flex h-[62px] w-full min-w-0 items-center gap-3 rounded-[18px] border bg-white px-3.5 transition ${
           error
             ? "border-red-500"
             : open
@@ -101,7 +101,7 @@ export default function AirportAutocomplete({
             onQueryChange(event.target.value);
             setOpen(true);
           }}
-          className="min-w-0 flex-1 bg-transparent text-base font-bold outline-none placeholder:font-normal placeholder:text-gray-400"
+          className="min-w-0 flex-1 bg-transparent text-[15px] font-bold outline-none placeholder:font-normal placeholder:text-gray-400"
         />
 
         {query && (
