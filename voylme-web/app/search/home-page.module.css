@@ -1,0 +1,385 @@
+.page {
+  min-height: 100dvh;
+  overflow-x: hidden;
+  background: #fff9fb;
+}
+
+.content {
+  width: 100%;
+}
+
+.services,
+.search,
+.footer {
+  width: calc(100% - 24px);
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+.services {
+  margin-top: 14px;
+}
+
+.search {
+  margin-top: 14px;
+  overflow: visible;
+}
+
+.footer {
+  margin-top: 24px;
+  margin-bottom: 88px;
+}
+
+/* Header */
+
+.page :global(header) {
+  width: 100%;
+  background: #fff;
+}
+
+.page :global(.voylme-header-shell) {
+  width: 100%;
+  max-width: 1280px;
+  height: 100px;
+  margin-inline: auto;
+}
+
+.page :global(.voylme-header-logo) {
+  left: 10px;
+  top: 18px;
+  width: 148px;
+  max-width: 148px;
+  height: 64px;
+}
+
+.page :global(.voylme-header-logo img) {
+  width: auto;
+  max-width: 100%;
+  height: 58px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.page :global(.voylme-header-actions) {
+  right: 8px;
+  bottom: 11px;
+  gap: 5px;
+}
+
+.page :global(header button[aria-label="Choose language"]),
+.page :global(header button[aria-label="Choose currency"]),
+.page :global(header button[aria-label^="Notifications"]),
+.page :global(header button[aria-label="Open account menu"]) {
+  width: 37px !important;
+  height: 37px !important;
+  min-width: 37px !important;
+  min-height: 37px !important;
+  padding: 0 !important;
+}
+
+.page :global(header button[aria-label="Choose language"] img) {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 999px !important;
+  object-fit: cover !important;
+}
+
+.page :global(header button[aria-label="Choose currency"] span) {
+  max-width: 32px;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  white-space: nowrap;
+}
+
+/* Hero */
+
+.page :global(.voylme-hero-v4) {
+  width: calc(100% - 16px) !important;
+  max-width: 1200px !important;
+  margin: 10px auto 0 !important;
+}
+
+.page :global(.voylme-hero-v4-frame) {
+  position: relative !important;
+  width: 100% !important;
+  min-height: 205px !important;
+  overflow: hidden !important;
+  border-radius: 22px !important;
+  background:
+    url("/images/hero-bg-clean-v2.png")
+    center / cover no-repeat !important;
+}
+
+.page :global(.voylme-hero-v4-image) {
+  display: none !important;
+}
+
+.page :global(.voylme-hero-v4-copy) {
+  position: absolute !important;
+  top: 18px !important;
+  bottom: 18px !important;
+  left: 18px !important;
+  right: auto !important;
+  display: grid !important;
+  grid-template-rows: auto 1fr auto !important;
+  width: 55% !important;
+  max-width: 230px !important;
+  row-gap: 7px !important;
+  overflow: hidden !important;
+  color: #fff !important;
+  text-align: left !important;
+}
+
+.page :global(.voylme-hero-v4-eyebrow) {
+  margin: 0 !important;
+  font-size: 10.5px !important;
+  font-weight: 800 !important;
+  line-height: 1.25 !important;
+}
+
+.page :global(.voylme-hero-v4-title) {
+  margin: 0 !important;
+  align-self: start !important;
+  overflow: hidden !important;
+  font-size: clamp(21px, 6vw, 27px) !important;
+  font-weight: 900 !important;
+  line-height: 1.08 !important;
+  white-space: pre-line !important;
+}
+
+.page :global(.voylme-hero-v4-description) {
+  width: 95% !important;
+  margin: 0 !important;
+  align-self: end !important;
+  overflow: hidden !important;
+  font-size: 11px !important;
+  line-height: 1.4 !important;
+  white-space: pre-line !important;
+}
+
+.page :global(.voylme-hero-v4-copy[lang="ara"]) {
+  left: auto !important;
+  right: 18px !important;
+  width: 58% !important;
+  max-width: 240px !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+.page :global(.voylme-hero-v4-copy[lang="ara"] > *) {
+  width: 100% !important;
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+/* Services */
+
+.page :global(.voylme-final-services) {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.page :global(.voylme-final-services-card) {
+  display: grid !important;
+  grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+  width: 100% !important;
+  min-height: 110px !important;
+  height: auto !important;
+  gap: 8px !important;
+  padding: 9px !important;
+  border-radius: 24px !important;
+  overflow: hidden !important;
+}
+
+.page :global(.voylme-final-services-card button) {
+  display: flex !important;
+  min-width: 0 !important;
+  min-height: 47px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 7px !important;
+  padding: 7px !important;
+  border-radius: 14px !important;
+}
+
+.page :global(.voylme-final-services-card button:nth-child(1)),
+.page :global(.voylme-final-services-card button:nth-child(2)),
+.page :global(.voylme-final-services-card button:nth-child(3)) {
+  grid-column: span 2 !important;
+}
+
+.page :global(.voylme-final-services-card button:nth-child(4)) {
+  grid-column: 2 / span 2 !important;
+}
+
+.page :global(.voylme-final-services-card button:nth-child(5)) {
+  grid-column: 4 / span 2 !important;
+}
+
+.page :global(.voylme-final-services-card button svg) {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+}
+
+.page :global(.voylme-final-services-card button span) {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Search */
+
+.page :global(.voylme-final-search) {
+  width: 100% !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
+.page :global(.voylme-final-search form) {
+  width: 100% !important;
+  padding: 12px !important;
+}
+
+.page :global(.voylme-final-search input),
+.page :global(.voylme-final-search button),
+.page :global(.voylme-final-search select) {
+  font-size: 14px !important;
+}
+
+.page :global(.voylme-final-search form button[type="submit"]) {
+  min-height: 55px !important;
+  font-size: 17px !important;
+  font-weight: 900 !important;
+}
+
+/* Tablet and desktop */
+
+@media (min-width: 768px) {
+  .page :global(.voylme-header-shell) {
+    height: 108px;
+    padding-inline: 28px;
+  }
+
+  .page :global(.voylme-header-logo) {
+    left: 28px;
+    top: 20px;
+    width: 220px;
+    max-width: 220px;
+  }
+
+  .page :global(.voylme-header-logo img) {
+    height: 68px;
+  }
+
+  .page :global(.voylme-header-actions) {
+    right: 28px;
+    bottom: 31px;
+    gap: 10px;
+  }
+
+  .page :global(header button[aria-label="Choose language"]),
+  .page :global(header button[aria-label="Choose currency"]),
+  .page :global(header button[aria-label^="Notifications"]),
+  .page :global(header button[aria-label="Open account menu"]) {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  .page :global(.voylme-hero-v4) {
+    width: calc(100% - 32px) !important;
+    margin-top: 16px !important;
+  }
+
+  .page :global(.voylme-hero-v4-frame) {
+    min-height: 360px !important;
+    border-radius: 28px !important;
+  }
+
+  .page :global(.voylme-hero-v4-copy) {
+    top: 42px !important;
+    bottom: 42px !important;
+    left: 42px !important;
+    width: 45% !important;
+    max-width: 500px !important;
+    row-gap: 14px !important;
+  }
+
+  .page :global(.voylme-hero-v4-copy[lang="ara"]) {
+    left: auto !important;
+    right: 42px !important;
+    width: 48% !important;
+    max-width: 520px !important;
+  }
+
+  .page :global(.voylme-hero-v4-eyebrow) {
+    font-size: 15px !important;
+  }
+
+  .page :global(.voylme-hero-v4-title) {
+    font-size: clamp(38px, 5vw, 58px) !important;
+  }
+
+  .page :global(.voylme-hero-v4-description) {
+    font-size: 18px !important;
+  }
+
+  .page :global(.voylme-final-services-card) {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    min-height: 92px !important;
+    gap: 12px !important;
+    padding: 13px !important;
+  }
+
+  .page :global(.voylme-final-services-card button),
+  .page :global(.voylme-final-services-card button:nth-child(1)),
+  .page :global(.voylme-final-services-card button:nth-child(2)),
+  .page :global(.voylme-final-services-card button:nth-child(3)),
+  .page :global(.voylme-final-services-card button:nth-child(4)),
+  .page :global(.voylme-final-services-card button:nth-child(5)) {
+    grid-column: auto !important;
+    min-height: 64px !important;
+  }
+
+  .page :global(.voylme-final-services-card button span) {
+    font-size: 15px !important;
+  }
+
+  .page :global(.voylme-final-search form) {
+    padding: 20px !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .page :global(.voylme-hero-v4-frame) {
+    min-height: 430px !important;
+  }
+
+  .page :global(.voylme-hero-v4-copy) {
+    top: 54px !important;
+    bottom: 54px !important;
+    left: 54px !important;
+    width: 42% !important;
+  }
+
+  .page :global(.voylme-hero-v4-copy[lang="ara"]) {
+    left: auto !important;
+    right: 54px !important;
+  }
+
+  .page :global(.voylme-hero-v4-title) {
+    font-size: 64px !important;
+  }
+
+  .page :global(.voylme-hero-v4-description) {
+    font-size: 20px !important;
+  }
+}
