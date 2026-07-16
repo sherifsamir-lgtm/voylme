@@ -153,9 +153,7 @@ export function getInitialVoylmePreferences():
 
   return {
     region,
-    language:
-      REGION_LANGUAGE[region] ||
-      "ENG_US",
+    language: "ENG_US",
     currency:
       REGION_CURRENCY[region] ||
       "USD",

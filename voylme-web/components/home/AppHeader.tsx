@@ -1503,10 +1503,10 @@ export default function AppHeader() {
       <header className="relative z-[600] shrink-0 border-b border-[#660033]/10 bg-white">
         <div
           ref={headerRef}
-          className="relative mx-auto h-[100px] w-full max-w-[430px] overflow-visible px-3"
+          className="voylme-header-shell relative mx-auto h-[100px] w-full overflow-visible px-3"
           dir="ltr"
         >
-          <div className="pointer-events-none absolute left-3 top-5 flex h-[62px] w-[170px] items-center overflow-hidden">
+          <div className="voylme-header-logo pointer-events-none absolute left-3 top-5 flex h-[62px] items-center overflow-hidden">
             <img
               src="/brand/voylme-logo-clean.png"
               alt="Voylme — Your Personal Travel Assistant"
@@ -1514,7 +1514,7 @@ export default function AppHeader() {
             />
           </div>
 
-          <div className="absolute bottom-2 right-5 flex items-center gap-1.5">
+          <div className="voylme-header-actions absolute bottom-2 right-3 flex items-center gap-1.5">
             <div className="relative">
               <button
                 type="button"
