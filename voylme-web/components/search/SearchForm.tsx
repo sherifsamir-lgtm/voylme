@@ -22,6 +22,7 @@ import {
   X,
 } from "lucide-react";
 import { airports, type Airport } from "./airports";
+import { useVoylmeHomeLocale } from "@/lib/voylme/i18n/home";
 
 type TripType = "round-trip" | "one-way";
 
@@ -60,6 +61,7 @@ function airportLabel(airport: Airport | null) {
 
 export default function SearchForm() {
   const router = useRouter();
+  const { copy, isRtl } = useVoylmeHomeLocale();
   const formRef = useRef<HTMLFormElement>(null);
   const hydratedRef = useRef(false);
 
@@ -373,7 +375,8 @@ export default function SearchForm() {
     <form
       ref={formRef}
       onSubmit={submit}
-      className="rounded-[20px] border border-[#660033]/5 bg-white p-2.5 shadow-[0_5px_18px_rgba(69,0,34,0.07)]"
+      dir={isRtl ? "rtl" : "ltr"}
+      className={`rounded-[20px] border border-[#660033]/5 bg-white p-2.5 shadow-[0_5px_18px_rgba(69,0,34,0.07)] ${isRtl ? "voylme-search-rtl" : ""}`}
       noValidate
     >
       <div className="grid grid-cols-2 rounded-[13px] bg-[#f3eef1] p-1">
@@ -389,7 +392,7 @@ export default function SearchForm() {
               : "text-[#5f5360]"
           }`}
         >
-          Round Trip
+          {copy.roundTrip}
         </button>
 
         <button
@@ -404,7 +407,7 @@ export default function SearchForm() {
               : "text-[#5f5360]"
           }`}
         >
-          One Way
+          {copy.oneWay}
         </button>
       </div>
 
@@ -425,7 +428,7 @@ export default function SearchForm() {
           <input
             id="flight-from"
             value={fromQuery}
-            placeholder="From"
+            placeholder={copy.from}
             autoComplete="off"
             onFocus={() => setActiveField("from")}
             onChange={(event) => {
@@ -469,7 +472,7 @@ export default function SearchForm() {
           <input
             id="flight-to"
             value={toQuery}
-            placeholder="To"
+            placeholder={copy.to}
             autoComplete="off"
             onFocus={() => setActiveField("to")}
             onChange={(event) => {
@@ -540,7 +543,7 @@ export default function SearchForm() {
               ))
             ) : (
               <p className="px-3 py-4 text-center text-[11px] font-semibold text-gray-500">
-                No matching airports found.
+                {copy.noAirports}
               </p>
             )}
           </div>
@@ -550,7 +553,7 @@ export default function SearchForm() {
       <div className="mt-2 grid grid-cols-2 gap-2">
         <label className="rounded-[13px] border border-[#d9cbd2] bg-white px-3 py-1.5 focus-within:border-[#660033] focus-within:ring-2 focus-within:ring-[#660033]/10">
           <span className="mb-0.5 block text-[8px] font-extrabold uppercase tracking-wide text-gray-500">
-            Departure
+            {copy.departure}
           </span>
 
           <span className="flex items-center gap-2">
@@ -578,7 +581,7 @@ export default function SearchForm() {
         {tripType === "round-trip" ? (
           <label className="rounded-[13px] border border-[#d9cbd2] bg-white px-3 py-1.5 focus-within:border-[#660033] focus-within:ring-2 focus-within:ring-[#660033]/10">
             <span className="mb-0.5 block text-[8px] font-extrabold uppercase tracking-wide text-gray-500">
-              Return
+              {copy.return}
             </span>
 
             <span className="flex items-center gap-2">
@@ -604,7 +607,7 @@ export default function SearchForm() {
           </label>
         ) : (
           <div className="flex min-h-[52px] items-center justify-center rounded-[13px] border border-dashed border-[#d9cbd2] bg-[#fcfafb] px-2 text-center text-[10px] font-semibold text-gray-400">
-            No return date
+            {copy.noReturnDate}
           </div>
         )}
       </div>
@@ -623,7 +626,7 @@ export default function SearchForm() {
           className="rounded-[13px] border border-[#d9cbd2] bg-white px-3 py-1.5 text-left focus:border-[#660033] focus:ring-2 focus:ring-[#660033]/10"
         >
           <span className="mb-0.5 block text-[8px] font-extrabold uppercase tracking-wide text-gray-500">
-            Travellers
+            {copy.travellers}
           </span>
 
           <span className="flex items-center gap-2">
@@ -634,9 +637,7 @@ export default function SearchForm() {
 
             <span className="min-w-0 flex-1 truncate text-[10px] font-bold text-slate-800">
               {passengers}{" "}
-              {passengers === 1
-                ? "Traveller"
-                : "Travellers"}
+              {passengers === 1 ? copy.traveller : copy.travellers}
             </span>
 
             <ChevronDown
@@ -659,7 +660,7 @@ export default function SearchForm() {
           className="rounded-[13px] border border-[#d9cbd2] bg-white px-3 py-1.5 text-left focus:border-[#660033] focus:ring-2 focus:ring-[#660033]/10"
         >
           <span className="mb-0.5 block text-[8px] font-extrabold uppercase tracking-wide text-gray-500">
-            Cabin class
+            {copy.cabinClass}
           </span>
 
           <span className="flex items-center gap-2">
@@ -669,7 +670,7 @@ export default function SearchForm() {
             />
 
             <span className="min-w-0 flex-1 truncate text-[10px] font-bold text-slate-800">
-              {cabinClass}
+              {cabinClass === "Economy" ? copy.economy : cabinClass === "Premium Economy" ? copy.premiumEconomy : cabinClass === "Business" ? copy.business : copy.first}
             </span>
 
             <ChevronDown
@@ -684,11 +685,11 @@ export default function SearchForm() {
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className="text-[12px] font-extrabold text-slate-900">
-                  Adult travellers
+                  {copy.adultTravellers}
                 </p>
 
                 <p className="text-[9px] text-gray-500">
-                  Select 1 to 9 travellers
+                  {copy.selectTravellers}
                 </p>
               </div>
 
@@ -732,7 +733,7 @@ export default function SearchForm() {
               onClick={() => setHomePicker(null)}
               className="mt-3 h-10 w-full rounded-[12px] bg-[#660033] text-[11px] font-extrabold text-white"
             >
-              Done
+              {copy.done}
             </button>
           </div>
         )}
@@ -758,7 +759,7 @@ export default function SearchForm() {
                     : "text-slate-800"
                 }`}
               >
-                {item}
+                {item === "Economy" ? copy.economy : item === "Premium Economy" ? copy.premiumEconomy : item === "Business" ? copy.business : copy.first}
 
                 {cabinClass === item && (
                   <Check size={16} />
@@ -783,7 +784,7 @@ export default function SearchForm() {
         className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-[14px] bg-[#660033] text-[14px] font-extrabold text-white shadow-[0_5px_14px_rgba(102,0,51,0.25)] transition active:scale-[0.99]"
       >
         <Search size={18} />
-        Search Flights
+        {copy.searchFlights}
       </button>
     </form>
   );

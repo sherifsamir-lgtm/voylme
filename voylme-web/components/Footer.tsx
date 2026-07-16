@@ -6,33 +6,18 @@ import {
 } from "lucide-react";
 
 const paymentMethods = [
-  {
-    src: "/payments/visa.svg",
-    alt: "Visa",
-  },
-  {
-    src: "/payments/mastercard.svg",
-    alt: "Mastercard",
-  },
-  {
-    src: "/payments/paypal.svg",
-    alt: "PayPal",
-  },
-  {
-    src: "/payments/apple-pay.svg",
-    alt: "Apple Pay",
-  },
-  {
-    src: "/payments/google-pay.svg",
-    alt: "Google Pay",
-  },
+  { src: "/payments/visa.svg", alt: "Visa" },
+  { src: "/payments/mastercard.svg", alt: "Mastercard" },
+  { src: "/payments/paypal.svg", alt: "PayPal" },
+  { src: "/payments/apple-pay.svg", alt: "Apple Pay" },
+  { src: "/payments/google-pay.svg", alt: "Google Pay" },
 ];
 
 export default function Footer() {
   return (
-    <footer className="home-footer">
-      <div className="home-footer-card">
-        <div className="footer-trust-row">
+    <footer className="voylme-final-footer">
+      <div className="voylme-final-footer-card">
+        <div className="voylme-trust-items">
           <span>
             <ShieldCheck size={16} />
             Secure
@@ -49,38 +34,31 @@ export default function Footer() {
           </span>
         </div>
 
-        <p className="footer-message">
-          Secure comparisons, transparent pricing
-          and trusted travel partners.
+        <p className="voylme-footer-description">
+          Secure comparisons, transparent pricing and trusted travel partners.
         </p>
 
         <div
-          className="payment-logos"
-          aria-label="Accepted payment methods"
+          className="voylme-payment-methods"
+          aria-label="Supported payment methods"
         >
           {paymentMethods.map((method) => (
-            <span
-              key={method.alt}
-              className="payment-logo"
-            >
-              <img
-                src={method.src}
-                alt={method.alt}
-              />
+            <span key={method.alt}>
+              <img src={method.src} alt={method.alt} />
             </span>
           ))}
         </div>
 
         <a
+          className="voylme-support-email"
           href="mailto:support@voylme.com"
-          className="footer-email"
         >
           <Mail size={14} />
           support@voylme.com
         </a>
 
         <nav
-          className="footer-links"
+          className="voylme-footer-links"
           aria-label="Footer links"
         >
           <a href="#">About</a>
@@ -90,9 +68,9 @@ export default function Footer() {
           <a href="#">Contact</a>
         </nav>
 
-        <p className="footer-copyright">
+        <small className="voylme-copyright">
           © 2026 Voylme. All rights reserved.
-        </p>
+        </small>
       </div>
     </footer>
   );

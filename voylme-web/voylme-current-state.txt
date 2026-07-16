@@ -1,0 +1,748 @@
+===== HERO.TSX =====
+"use client";
+
+import { useEffect, useState } from "react";
+
+type HeroLocale = "en" | "ar" | "fr";
+
+type HeroContent = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  dir: "ltr" | "rtl";
+};
+
+const HERO_TEXT: Record<HeroLocale, HeroContent> = {
+  en: {
+    eyebrow: "FLIGHTS · HOTELS · CARS · ACTIVITIES",
+    title: "Find the best\ntravel deal faster.",
+    description:
+      "Search and compare trusted travel partners worldwide.",
+    dir: "ltr",
+  },
+
+  ar: {
+    eyebrow: "رحلات · فنادق · سيارات · أنشطة",
+    title: "اعثر على أفضل\nعروض السفر بشكل أسرع.",
+    description:
+      "ابحث وقارن بين عروض السفر من شركاء موثوقين حول العالم.",
+    dir: "rtl",
+  },
+
+  fr: {
+    eyebrow: "VOLS · HÔTELS · VOITURES · ACTIVITÉS",
+    title: "Trouvez les meilleures\noffres de voyage plus vite.",
+    description:
+      "Recherchez et comparez des partenaires de voyage fiables dans le monde entier.",
+    dir: "ltr",
+  },
+};
+
+function valueToText(value: unknown): string {
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+
+    if (
+      trimmed.startsWith("{") &&
+      trimmed.endsWith("}")
+    ) {
+      try {
+        return valueToText(JSON.parse(trimmed));
+      } catch {
+        return trimmed;
+      }
+    }
+
+    return trimmed;
+  }
+
+  if (
+    value &&
+    typeof value === "object"
+  ) {
+    const item = value as Record<string, unknown>;
+
+    return [
+      item.code,
+      item.languageCode,
+      item.locale,
+      item.value,
+      item.name,
+      item.label,
+      item.language,
+    ]
+      .filter(Boolean)
+      .map(String)
+      .join(" ");
+  }
+
+  return "";
+}
+
+function resolveHeroLocale(
+  value: unknown,
+): HeroLocale {
+  const code = valueToText(value)
+    .trim()
+    .toLowerCase();
+
+  if (
+    code === "ar" ||
+    code === "ara" ||
+    code.startsWith("ar-") ||
+    code.includes("arabic") ||
+    code.includes("العربية") ||
+    code.includes("عربي")
+  ) {
+    return "ar";
+  }
+
+  if (
+    code === "fr" ||
+    code === "fra" ||
+    code === "fre" ||
+    code.startsWith("fr-") ||
+    code.includes("french") ||
+    code.includes("français") ||
+    code.includes("francais")
+  ) {
+    return "fr";
+  }
+
+  return "en";
+}
+
+export default function Hero() {
+  const [locale, setLocale] =
+    useState<HeroLocale>("en");
+
+  useEffect(() => {
+    const syncLanguage = () => {
+      const storedLanguage =
+        localStorage.getItem(
+          "voylme-language",
+        );
+
+      setLocale(
+        resolveHeroLocale(storedLanguage),
+      );
+    };
+
+    const handleLanguageChange = (
+      event: Event,
+    ) => {
+      const customEvent =
+        event as CustomEvent<unknown>;
+
+      setLocale(
+        resolveHeroLocale(
+          customEvent.detail,
+        ),
+      );
+    };
+
+    syncLanguage();
+
+    const languageSyncInterval = window.setInterval(syncLanguage, 250);
+
+    window.addEventListener(
+      "voylme-language-change",
+      handleLanguageChange,
+    );
+
+    window.addEventListener(
+      "storage",
+      syncLanguage,
+    );
+
+    window.addEventListener(
+      "focus",
+      syncLanguage,
+    );
+
+    return () => {
+      window.clearInterval(languageSyncInterval);
+
+      window.removeEventListener(
+        "voylme-language-change",
+        handleLanguageChange,
+      );
+
+      window.removeEventListener(
+        "storage",
+        syncLanguage,
+      );
+
+      window.removeEventListener(
+        "focus",
+        syncLanguage,
+      );
+    };
+  }, []);
+
+  const content = HERO_TEXT[locale];
+
+  return (
+    <section className="home-hero">
+      <div className="home-hero-frame voylme-final-overlay-hero">
+        <img
+          src="/images/hero-bg-clean.png?v=hero-final-20260713"
+          alt=""
+          aria-hidden="true"
+          draggable={false}
+        />
+
+        <div
+          key={locale}
+          className="voylme-final-overlay-hero-copy"
+          dir={content.dir}
+          lang={locale}
+        >
+          <p className="voylme-final-overlay-hero-eyebrow">
+            {content.eyebrow}
+          </p>
+
+          <h2>{content.title}</h2>
+
+          <p className="voylme-final-overlay-hero-description">
+            {content.description}
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+===== HEADER LANGUAGE LIST =====
+    ["estonian", 31],
+    ["eesti", 31],
+    ["croatian", 32],
+    ["hrvatski", 32],
+    ["lithuanian", 33],
+    ["lietuvių", 33],
+    ["slovak", 34],
+    ["slovenčina", 34],
+    ["serbian", 35],
+    ["srpski", 35],
+    ["slovenian", 36],
+    ["slovenščina", 36],
+    ["vietnamese", 37],
+    ["tiếng việt", 37],
+    ["filipino", 38],
+    ["icelandic", 39],
+    ["íslenska", 39],
+  ] as const;
+
+  for (const [keyword, rank] of order) {
+    if (value.includes(keyword)) {
+      return rank;
+    }
+  }
+
+  return 500;
+}
+
+
+/* VOYLME_FINAL_LANGUAGE_DATA_START */
+
+const VOYLME_FINAL_SUGGESTED_LANGUAGES = [
+  { code: "ARA", name: "العربية", country: "Egypt", flag: "/flags/countries/eg.svg" },
+  { code: "ENG_US", name: "English (US)", country: "United States", flag: "/flags/countries/us.svg" },
+  { code: "FRA", name: "Français", country: "France", flag: "/flags/countries/fr.svg" },
+  { code: "RUS", name: "Русский", country: "Russia", flag: "/flags/countries/ru.svg" },
+  { code: "SPA", name: "Español", country: "Spain", flag: "/flags/countries/es.svg" },
+] as const;
+
+const VOYLME_FINAL_ALL_LANGUAGES = [
+  { code: "ENG_GB", name: "English (UK)", country: "United Kingdom", flag: "/flags/countries/gb.svg" },
+  { code: "ENG_US", name: "English (US)", country: "United States", flag: "/flags/countries/us.svg" },
+  { code: "DEU", name: "Deutsch", country: "Germany", flag: "/flags/countries/de.svg" },
+  { code: "NLD", name: "Nederlands", country: "Netherlands", flag: "/flags/countries/nl.svg" },
+  { code: "FRA", name: "Français", country: "France", flag: "/flags/countries/fr.svg" },
+  { code: "SPA", name: "Español", country: "Spain", flag: "/flags/countries/es.svg" },
+  { code: "SPA_MX", name: "Español (MX)", country: "Mexico", flag: "/flags/countries/mx.svg" },
+  { code: "CAT", name: "Català", country: "Spain", flag: "/flags/countries/es.svg" },
+  { code: "ITA", name: "Italiano", country: "Italy", flag: "/flags/countries/it.svg" },
+  { code: "POR_PT", name: "Português (PT)", country: "Portugal", flag: "/flags/countries/pt.svg" },
+  { code: "POR_BR", name: "Português (BR)", country: "Brazil", flag: "/flags/countries/br.svg" },
+  { code: "NOR", name: "Norsk", country: "Norway", flag: "/flags/countries/no.svg" },
+  { code: "FIN", name: "Suomi", country: "Finland", flag: "/flags/countries/fi.svg" },
+  { code: "SWE", name: "Svenska", country: "Sweden", flag: "/flags/countries/se.svg" },
+  { code: "DAN", name: "Dansk", country: "Denmark", flag: "/flags/countries/dk.svg" },
+  { code: "CES", name: "Čeština", country: "Czechia", flag: "/flags/countries/cz.svg" },
+  { code: "HUN", name: "Magyar", country: "Hungary", flag: "/flags/countries/hu.svg" },
+  { code: "RON", name: "Română", country: "Romania", flag: "/flags/countries/ro.svg" },
+  { code: "JPN", name: "日本語", country: "Japan", flag: "/flags/countries/jp.svg" },
+  { code: "ZHO_CN", name: "简体中文", country: "China", flag: "/flags/countries/cn.svg" },
+  { code: "ZHO_TW", name: "繁體中文", country: "Taiwan", flag: "/flags/countries/tw.svg" },
+  { code: "POL", name: "Polski", country: "Poland", flag: "/flags/countries/pl.svg" },
+  { code: "ELL", name: "Ελληνικά", country: "Greece", flag: "/flags/countries/gr.svg" },
+  { code: "RUS", name: "Русский", country: "Russia", flag: "/flags/countries/ru.svg" },
+  { code: "TUR", name: "Türkçe", country: "Türkiye", flag: "/flags/countries/tr.svg" },
+  { code: "BUL", name: "Български", country: "Bulgaria", flag: "/flags/countries/bg.svg" },
+  { code: "ARA", name: "العربية", country: "Egypt", flag: "/flags/countries/eg.svg" },
+  { code: "KOR", name: "한국어", country: "South Korea", flag: "/flags/countries/kr.svg" },
+  { code: "LAV", name: "Latviski", country: "Latvia", flag: "/flags/countries/lv.svg" },
+  { code: "UKR", name: "Українська", country: "Ukraine", flag: "/flags/countries/ua.svg" },
+  { code: "HIN", name: "हिन्दी", country: "India", flag: "/flags/countries/in.svg" },
+  { code: "IND", name: "Bahasa Indonesia", country: "Indonesia", flag: "/flags/countries/id.svg" },
+  { code: "MSA", name: "Bahasa Malaysia", country: "Malaysia", flag: "/flags/countries/my.svg" },
+  { code: "THA", name: "ภาษาไทย", country: "Thailand", flag: "/flags/countries/th.svg" },
+  { code: "EST", name: "Eesti", country: "Estonia", flag: "/flags/countries/ee.svg" },
+  { code: "HRV", name: "Hrvatski", country: "Croatia", flag: "/flags/countries/hr.svg" },
+  { code: "LIT", name: "Lietuvių", country: "Lithuania", flag: "/flags/countries/lt.svg" },
+  { code: "SLK", name: "Slovenčina", country: "Slovakia", flag: "/flags/countries/sk.svg" },
+  { code: "SRP", name: "Srpski", country: "Serbia", flag: "/flags/countries/rs.svg" },
+  { code: "SLV", name: "Slovenščina", country: "Slovenia", flag: "/flags/countries/si.svg" },
+  { code: "VIE", name: "Tiếng Việt", country: "Vietnam", flag: "/flags/countries/vn.svg" },
+  { code: "FIL", name: "Filipino", country: "Philippines", flag: "/flags/countries/ph.svg" },
+  { code: "ISL", name: "Íslenska", country: "Iceland", flag: "/flags/countries/is.svg" },
+] as const;
+
+/* VOYLME_FINAL_LANGUAGE_DATA_END */
+
+
+/* VOYLME_CURRENCY_LIST_START */
+
+type VoylmeHeaderCurrency = {
+
+===== HEADER CURRENCY JSX =====
+                            <img
+                              src={item.flag}
+                              alt=""
+                              aria-hidden="true"
+                              className="h-full w-full object-cover"
+                            />
+                          </span>
+
+                          <span className="whitespace-nowrap text-[14px] font-medium leading-none">
+                            {item.name}
+                          </span>
+
+                          {selected && (
+                            <span className="ml-auto shrink-0 text-[17px] font-bold text-[#660033]">
+                              ✓
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="relative">
+              <button
+                type="button"
+                aria-label="Choose currency"
+                title="Currency"
+                aria-expanded={
+                  openSelector === "currency"
+                }
+                onClick={() => {
+                  setOpenSelector(
+                    openSelector === "currency"
+                      ? null
+                      : "currency",
+                  );
+                  setQuery("");
+                }}
+                className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#660033]/20 bg-white text-[#660033] shadow-sm"
+              >
+                <span className="text-[16px] font-bold leading-none">$</span>
+              </button>
+
+              {openSelector === "currency" && (
+                <div className="absolute left-1/2 top-[38px] z-[4000] w-[275px] max-w-[calc(100vw-24px)] -translate-x-1/2 overflow-hidden rounded-[14px] border border-gray-200 bg-white shadow-2xl">
+                  <div className="max-h-[330px] touch-pan-y overflow-y-auto overscroll-contain py-1 [font-family:Arial,Helvetica,sans-serif]">
+                    <p className="px-3 pb-1 pt-2 text-[10px] font-bold text-gray-600">
+                      Suggested for you
+                    </p>
+
+                    {VOYLME_SUGGESTED_CURRENCIES.map((item) => {
+                      const selected =
+                        currency.code === item.code;
+
+                      return (
+                        <button
+                          key={`suggested-${item.code}`}
+                          type="button"
+                          onClick={() => {
+                            selectCurrency(item as any);
+                          }}
+                          className={`flex min-h-[44px] w-full items-center gap-2 px-3 text-left transition active:bg-gray-100 ${
+                            selected
+                              ? "bg-[#fff3f8] text-[#660033]"
+                              : "bg-white text-[#1a1a1a]"
+                          }`}
+                        >
+                          <span className="w-[30px] shrink-0 text-[12px] font-medium text-gray-500">
+                            {item.code}
+                          </span>
+
+                          <span className="flex h-7 w-7 shrink-0 overflow-hidden rounded-full border border-gray-200 bg-white">
+                            <img
+                              src={item.flag}
+                              alt=""
+                              aria-hidden="true"
+                              className="h-full w-full object-cover"
+                            />
+                          </span>
+
+                          <span className="min-w-0 flex-1 whitespace-nowrap text-[12px] font-medium leading-none">
+                            {item.name}
+                          </span>
+
+                          {selected && (
+                            <span className="shrink-0 text-[17px] font-bold text-[#660033]">
+                              ✓
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+
+                    <p className="mt-1 border-t border-gray-100 px-3 pb-1 pt-2 text-[10px] font-bold text-gray-600">
+                      All currencies
+                    </p>
+
+                    {VOYLME_ALL_CURRENCIES.map((item) => {
+                      const selected =
+                        currency.code === item.code;
+
+                      return (
+                        <button
+                          key={item.code}
+                          type="button"
+                          onClick={() => {
+                            selectCurrency(item as any);
+                          }}
+                          className={`flex min-h-[44px] w-full items-center gap-2 px-3 text-left transition active:bg-gray-100 ${
+                            selected
+                              ? "bg-[#fff3f8] text-[#660033]"
+                              : "bg-white text-[#1a1a1a]"
+                          }`}
+                        >
+                          <span className="w-[30px] shrink-0 text-[12px] font-medium text-gray-500">
+                            {item.code}
+                          </span>
+
+                          <span className="flex h-7 w-7 shrink-0 overflow-hidden rounded-full border border-gray-200 bg-white">
+                            <img
+                              src={item.flag}
+                              alt=""
+                              aria-hidden="true"
+                              className="h-full w-full object-cover"
+                            />
+                          </span>
+
+                          <span className="min-w-0 flex-1 whitespace-nowrap text-[12px] font-medium leading-none">
+                            {item.name}
+                          </span>
+
+                          {selected && (
+                            <span className="shrink-0 text-[17px] font-bold text-[#660033]">
+                              ✓
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="relative">
+              <button
+                type="button"
+                aria-label={`Notifications${
+                  unreadCount
+                    ? `, ${unreadCount} unread`
+                    : ""
+                }`}
+                onClick={() => {
+
+===== HERO CSS =====
+  .voylme-hero-copy p {
+  margin: 3px 0 0 !important;
+  font-size: 9px !important;
+  line-height: 1.25 !important;
+  -webkit-line-clamp: 2 !important;
+}
+
+@media (max-height: 820px) {
+  .home-page .home-hero-frame.voylme-translated-hero {
+    grid-template-rows: 104px 58px !important;
+    height: 162px !important;
+  }
+
+  .home-page
+    .home-hero-frame.voylme-translated-hero
+    .voylme-hero-image-area {
+    height: 104px !important;
+  }
+
+  .home-page
+    .home-hero-frame.voylme-translated-hero
+    .voylme-hero-copy {
+    height: 58px !important;
+    min-height: 58px !important;
+  }
+}
+
+
+/* VOYLME_FINAL_OVERLAY_HERO_START */
+
+.home-page .home-hero-frame.voylme-final-overlay-hero {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  height: 176px !important;
+  min-height: 176px !important;
+  overflow: hidden !important;
+  border-radius: 24px !important;
+  background: #660033 !important;
+  box-shadow: 0 7px 20px rgba(102, 0, 51, 0.14) !important;
+}
+
+.home-page .home-hero-frame.voylme-final-overlay-hero > img {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 0 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+.voylme-final-overlay-hero-copy {
+  position: absolute !important;
+  z-index: 2 !important;
+  top: 18px !important;
+  left: 18px !important;
+  right: auto !important;
+  width: 58% !important;
+  max-width: 230px !important;
+  overflow: visible !important;
+  color: #fff !important;
+  text-align: left !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.voylme-final-overlay-hero-copy[dir="rtl"] {
+  left: 18px !important;
+  right: auto !important;
+  text-align: right !important;
+  font-family: Tahoma, Arial, sans-serif !important;
+}
+
+.voylme-final-overlay-hero-eyebrow {
+  display: block !important;
+  margin: 0 0 9px !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  color: #fff !important;
+  white-space: normal !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+}
+
+.voylme-final-overlay-hero-copy h2 {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  color: #fff !important;
+  white-space: pre-line !important;
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.03em !important;
+}
+
+.voylme-final-overlay-hero-copy[lang="ar"] h2 {
+  font-size: 23px !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0 !important;
+}
+
+.voylme-final-overlay-hero-copy[lang="fr"] h2 {
+  font-size: 21px !important;
+  line-height: 1.08 !important;
+}
+
+.voylme-final-overlay-hero-description {
+  display: block !important;
+  margin: 9px 0 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  color: rgba(255,255,255,0.98) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1.35 !important;
+}
+
+.voylme-final-overlay-hero-copy[dir="rtl"]
+.voylme-final-overlay-hero-description {
+  text-align: right !important;
+  line-height: 1.5 !important;
+}
+
+@media (max-width: 360px) {
+  .home-page .home-hero-frame.voylme-final-overlay-hero {
+    height: 170px !important;
+    min-height: 170px !important;
+  }
+
+  .voylme-final-overlay-hero-copy,
+  .voylme-final-overlay-hero-copy[dir="rtl"] {
+    top: 15px !important;
+    left: 15px !important;
+    width: 59% !important;
+  }
+
+  .voylme-final-overlay-hero-eyebrow {
+    font-size: 9px !important;
+  }
+
+  .voylme-final-overlay-hero-copy h2 {
+    font-size: 23px !important;
+  }
+
+  .voylme-final-overlay-hero-copy[lang="ar"] h2 {
+    font-size: 20px !important;
+  }
+
+  .voylme-final-overlay-hero-description {
+    font-size: 10px !important;
+  }
+}
+
+/* VOYLME_FINAL_OVERLAY_HERO_END */
+
+
+/* VOYLME HERO ABSOLUTE FINAL FIX */
+
+.home-hero {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  flex-shrink: 0 !important;
+  padding: 12px 5px 0 !important;
+  overflow: visible !important;
+}
+
+.home-hero-frame.voylme-final-overlay-hero {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  height: 188px !important;
+  min-height: 188px !important;
+  overflow: hidden !important;
+  border-radius: 24px !important;
+  background: #660033 !important;
+  box-shadow:
+    0 7px 20px rgba(102, 0, 51, 0.14) !important;
+}
+
+.home-hero-frame.voylme-final-overlay-hero > img {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 1 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  border: 0 !important;
+}
+
+.voylme-final-overlay-hero-copy {
+  position: absolute !important;
+  z-index: 5 !important;
+  top: 18px !important;
+  left: 18px !important;
+  right: auto !important;
+  width: 56% !important;
+  max-width: 230px !important;
+  height: auto !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  color: #ffffff !important;
+  text-align: left !important;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif !important;
+}
+
+.voylme-final-overlay-hero-copy[dir="rtl"] {
+  top: 18px !important;
+  left: 18px !important;
+  right: auto !important;
+  width: 56% !important;
+  direction: rtl !important;
+  text-align: right !important;
+  font-family:
+    Tahoma,
+    Arial,
+    sans-serif !important;
+}
+
+.voylme-final-overlay-hero-eyebrow {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 0 10px !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  color: #ffffff !important;
+  white-space: normal !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+}
+
+.voylme-final-overlay-hero-copy h2 {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  color: #ffffff !important;
+  white-space: pre-line !important;
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.03em !important;
+  -webkit-line-clamp: unset !important;
+}
+
+.voylme-final-overlay-hero-copy[lang="ar"] h2 {
+  font-size: 23px !important;
+  line-height: 1.18 !important;
+  letter-spacing: 0 !important;
+}
+
+.voylme-final-overlay-hero-copy[lang="fr"] h2 {
+  font-size: 21px !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.voylme-final-overlay-hero-description {
+  display: block !important;
+  width: 100% !important;
+  margin: 10px 0 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  color: rgba(255, 255, 255, 0.98) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
