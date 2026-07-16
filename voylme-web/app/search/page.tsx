@@ -1,5 +1,7 @@
 "use client";
 
+import styles from "./home-clean.module.css";
+
 import AIHelpButton from "../../components/AIHelpButton";
 import Footer from "../../components/Footer";
 import AppHeader from "../../components/home/AppHeader";
@@ -9,7 +11,7 @@ import SearchForm from "../../components/search/SearchForm";
 
 export default function SearchPage() {
   return (
-    <main className="voylme-final-viewport">
+    <main className={`${styles.home} voylme-final-viewport`}>
       <div className="voylme-final-page">
         <AppHeader />
         <Hero />
