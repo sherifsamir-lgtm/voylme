@@ -1392,667 +1392,46 @@ body > div[class*="z-[10000]"],
 
 /* VOYLME_HEADER_INTERACTION_FINAL_END */
 
-/* VOYLME_CLEAN_HEADER_HERO_FINAL_START */
-
-/* =========================================================
-   HEADER INTERACTION LAYER
-   ========================================================= */
-
-.voylme-final-header {
-  position: relative !important;
-  z-index: 50000 !important;
-  isolation: isolate !important;
-  pointer-events: auto !important;
-  overflow: visible !important;
-}
-
-.voylme-final-header-inner {
-  position: relative !important;
-  z-index: 50001 !important;
-  pointer-events: auto !important;
-  overflow: visible !important;
-}
-
-.voylme-final-header button,
-.voylme-final-header a,
-.voylme-final-header input,
-.voylme-final-header select,
-.voylme-final-header [role="button"] {
-  position: relative;
-  pointer-events: auto !important;
-  touch-action: manipulation !important;
-}
-
-.voylme-final-header button {
-  cursor: pointer !important;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* Header dropdowns and panels */
-.voylme-final-header-inner
-  > div:last-child {
-  position: relative !important;
-  z-index: 50010 !important;
-  pointer-events: auto !important;
-  overflow: visible !important;
-}
-
-.voylme-final-header-inner
-  > div:last-child
-  > div {
-  pointer-events: auto !important;
-}
-
-.voylme-final-header-inner
-  > div:last-child
-  > div
-  > div[class*="absolute"] {
-  z-index: 60000 !important;
-  pointer-events: auto !important;
-}
-
-/* Full-screen account menu */
-body > div[class*="fixed"][class*="z-[10000]"],
-div.fixed.inset-0.z-\[10000\] {
-  z-index: 70000 !important;
-  pointer-events: auto !important;
-}
-
-/* =========================================================
-   CLEAN HERO CONTAINER
-   ========================================================= */
-
-.voylme-hero-v4 {
-  position: relative !important;
-  z-index: 1 !important;
-
-  display: block !important;
-  width: 100% !important;
-
-  margin: 0 !important;
-  padding: 10px 5px 0 !important;
-
-  pointer-events: none !important;
-}
-
-.voylme-hero-v4-frame {
-  position: relative !important;
-  z-index: 1 !important;
-  isolation: isolate !important;
-
-  display: block !important;
-  width: 100% !important;
-
-  height: clamp(188px, 43.8vw, 215px) !important;
-  min-height: 188px !important;
-  max-height: 215px !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  overflow: hidden !important;
-
-  border: 0 !important;
-  border-radius: clamp(22px, 5.4vw, 28px) !important;
-  background: #660033 !important;
-
-  box-shadow:
-    0 7px 20px rgba(102, 0, 51, 0.14) !important;
-
-  pointer-events: none !important;
-}
-
-.voylme-hero-v4-frame::before,
-.voylme-hero-v4-frame::after {
-  display: none !important;
-  content: none !important;
-}
-
-/* =========================================================
-   HERO IMAGE
-   ========================================================= */
-
-.voylme-hero-v4-frame
-  > .voylme-hero-v4-image {
-  position: absolute !important;
-  inset: 0 !important;
-  z-index: 0 !important;
-
-  display: block !important;
-
-  width: 100% !important;
-  height: 100% !important;
-  max-width: none !important;
-  max-height: none !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-
-  object-fit: cover !important;
-  object-position: center center !important;
-
-  transform: none !important;
-  transform-origin: center center !important;
-
-  pointer-events: none !important;
-  user-select: none !important;
-}
-
-/* =========================================================
-   HERO TYPOGRAPHY SYSTEM
-   ========================================================= */
-
-.voylme-hero-v4-frame
-  > .voylme-hero-v4-copy {
-  --hero-top: clamp(22px, 5.8vw, 29px);
-  --hero-bottom: clamp(19px, 5vw, 25px);
-  --hero-side: clamp(17px, 4.5vw, 23px);
-  --hero-width: 56%;
-
-  --eyebrow-size: clamp(10.7px, 2.85vw, 14px);
-  --eyebrow-line: 1.18;
-
-  --title-size: clamp(22px, 5.8vw, 29px);
-  --title-line: 1.055;
-  --title-gap: clamp(14px, 3.6vw, 18px);
-
-  --description-size: clamp(11.5px, 3vw, 15px);
-  --description-line: 1.42;
-
-  position: absolute !important;
-  z-index: 3 !important;
-
-  top: var(--hero-top) !important;
-  bottom: var(--hero-bottom) !important;
-  left: var(--hero-side) !important;
-  right: auto !important;
-
-  display: grid !important;
-  grid-template-rows:
-    auto
-    auto
-    minmax(0, 1fr) !important;
-
-  align-content: stretch !important;
-  align-items: start !important;
-
-  width: var(--hero-width) !important;
-  max-width: 620px !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  overflow: visible !important;
-
-  color: #ffffff !important;
-  background: transparent !important;
-
-  direction: ltr !important;
-  text-align: left !important;
-
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif !important;
-
-  pointer-events: none !important;
-}
-
-.voylme-hero-v4-frame
-  > .voylme-hero-v4-copy,
-.voylme-hero-v4-frame
-  > .voylme-hero-v4-copy
-  > * {
-  box-sizing: border-box !important;
-
-  border: 0 !important;
-  border-radius: 0 !important;
-
-  background: transparent !important;
-  background-image: none !important;
-
-  box-shadow: none !important;
-  text-shadow: none !important;
-
-  pointer-events: none !important;
-}
-
-/* Eyebrow */
-.voylme-hero-v4-frame
-  > .voylme-hero-v4-copy
-  > .voylme-hero-v4-eyebrow {
-  position: static !important;
-  inset: auto !important;
-
-  display: block !important;
-  width: max-content !important;
-  max-width: 100% !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  color: rgba(255, 255, 255, 0.99) !important;
-
-  font-size: var(--eyebrow-size) !important;
-  font-weight: 800 !important;
-  line-height: var(--eyebrow-line) !important;
-  letter-spacing: 0 !important;
-
-  white-space: nowrap !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-}
-
-/* Title */
-.voylme-hero-v4-frame
-  > .voylme-hero-v4-copy
-  > .voylme-hero-v4-title {
-  position: static !important;
-  inset: auto !important;
-
-  display: block !important;
-  width: 100% !important;
-  max-width: 100% !important;
-
-  margin: var(--title-gap) 0 0 !important;
-  padding: 0 !important;
-
-  color: #ffffff !important;
-
-  font-size: var(--title-size) !important;
-  font-weight: 800 !important;
-  line-height: var(--title-line) !important;
-  letter-spacing: -0.025em !important;
-
-  white-space: pre-line !important;
-  overflow-wrap: normal !important;
-  word-break: normal !important;
-  hyphens: none !important;
-}
-
-/* Description */
-.voylme-hero-v4-frame
-  > .voylme-hero-v4-copy
-  > .voylme-hero-v4-description {
-  position: static !important;
-  inset: auto !important;
-
-  align-self: end !important;
-
-  display: block !important;
-  width: 100% !important;
-  max-width: 100% !important;
-
-  margin: 0 !important;
-  padding: 0 !important;
-
-  color: rgba(255, 255, 255, 0.98) !important;
-
-  font-size: var(--description-size) !important;
-  font-weight: 400 !important;
-  line-height: var(--description-line) !important;
-  letter-spacing: 0 !important;
-
-  white-space: pre-line !important;
-  overflow-wrap: normal !important;
-  word-break: normal !important;
-  hyphens: none !important;
-}
-
-/* =========================================================
-   LANGUAGE-SPECIFIC VISUAL BALANCING
-   ========================================================= */
-
-/* Master English */
-.voylme-hero-v4-copy[lang="eng"] {
-  --hero-width: 55%;
-  --title-size: clamp(22px, 5.8vw, 29px);
-}
-
-/* Western European languages */
-.voylme-hero-v4-copy:is(
-  [lang="fra"],
-  [lang="deu"],
-  [lang="nld"],
-  [lang="cat"],
-  [lang="ita"],
-  [lang="por"],
-  [lang="spa"]
-) {
-  --hero-width: 56%;
-  --title-size: clamp(21px, 5.45vw, 27px);
-  --description-size: clamp(11px, 2.85vw, 14px);
-}
-
-/* Slavic and Central European languages */
-.voylme-hero-v4-copy:is(
-  [lang="rus"],
-  [lang="ukr"],
-  [lang="bul"],
-  [lang="pol"],
-  [lang="ces"],
-  [lang="slk"],
-  [lang="slv"],
-  [lang="srp"],
-  [lang="hrv"],
-  [lang="ron"],
-  [lang="hun"],
-  [lang="lav"],
-  [lang="lit"],
-  [lang="est"]
-) {
-  --hero-width: 56%;
-  --title-size: clamp(20px, 5.25vw, 26px);
-  --description-size: clamp(10.8px, 2.8vw, 13.5px);
-}
-
-/* Nordic languages */
-.voylme-hero-v4-copy:is(
-  [lang="nor"],
-  [lang="fin"],
-  [lang="swe"],
-  [lang="dan"],
-  [lang="isl"]
-) {
-  --hero-width: 56%;
-  --title-size: clamp(20.5px, 5.35vw, 26.5px);
-  --description-size: clamp(10.8px, 2.8vw, 13.5px);
-}
-
-/* Greek */
-.voylme-hero-v4-copy[lang="ell"] {
-  --hero-width: 57%;
-  --eyebrow-size: clamp(9.2px, 2.45vw, 12px);
-  --title-size: clamp(19px, 5vw, 25px);
-  --title-line: 1.075;
-  --title-gap: clamp(11px, 2.9vw, 15px);
-  --description-size: clamp(10.3px, 2.65vw, 13px);
-}
-
-/* Turkish */
-.voylme-hero-v4-copy[lang="tur"] {
-  --hero-width: 56%;
-  --title-size: clamp(20px, 5.25vw, 26px);
-  --description-size: clamp(10.8px, 2.8vw, 13.5px);
-}
-
-/* Indonesian and Malay */
-.voylme-hero-v4-copy:is(
-  [lang="ind"],
-  [lang="msa"]
-) {
-  --hero-width: 57%;
-  --eyebrow-size: clamp(9.2px, 2.45vw, 12px);
-  --title-size: clamp(18.5px, 4.9vw, 24px);
-  --title-line: 1.06;
-  --title-gap: clamp(11px, 2.9vw, 14px);
-  --description-size: clamp(10px, 2.6vw, 12.5px);
-}
-
-/* Filipino */
-.voylme-hero-v4-copy[lang="fil"] {
-  --hero-width: 57%;
-  --eyebrow-size: clamp(9px, 2.35vw, 11.5px);
-  --title-size: clamp(17.5px, 4.65vw, 23px);
-  --title-line: 1.06;
-  --title-gap: clamp(10px, 2.7vw, 13px);
-  --description-size: clamp(9.7px, 2.5vw, 12px);
-}
-
-/* Vietnamese */
-.voylme-hero-v4-copy[lang="vie"] {
-  --hero-width: 57%;
-  --eyebrow-size: clamp(9.3px, 2.45vw, 12px);
-  --title-size: clamp(19px, 5vw, 25px);
-  --description-size: clamp(10.3px, 2.65vw, 13px);
-}
-
-/* Chinese */
-.voylme-hero-v4-copy:is(
-  [lang="zho_cn"],
-  [lang="zho_tw"]
-) {
-  --hero-width: 54%;
-  --eyebrow-size: clamp(11px, 2.9vw, 14px);
-  --title-size: clamp(23px, 6vw, 30px);
-  --title-line: 1.13;
-  --description-size: clamp(12px, 3.1vw, 15.5px);
-  --description-line: 1.48;
-
-  font-family:
-    "Noto Sans SC",
-    "Microsoft YaHei",
-    Arial,
-    sans-serif !important;
-}
-
-/* Japanese */
-.voylme-hero-v4-copy[lang="jpn"] {
-  --hero-width: 57%;
-  --eyebrow-size: clamp(10px, 2.65vw, 13px);
-  --title-size: clamp(20px, 5.25vw, 26px);
-  --title-line: 1.17;
-  --description-size: clamp(10.8px, 2.8vw, 13.5px);
-  --description-line: 1.48;
-
-  font-family:
-    "Noto Sans JP",
-    Arial,
-    sans-serif !important;
-}
-
-/* Korean */
-.voylme-hero-v4-copy[lang="kor"] {
-  --hero-width: 57%;
-  --title-size: clamp(20px, 5.25vw, 26px);
-  --title-line: 1.16;
-  --description-size: clamp(10.8px, 2.8vw, 13.5px);
-  --description-line: 1.47;
-
-  font-family:
-    "Noto Sans KR",
-    Arial,
-    sans-serif !important;
-}
-
-/* Hindi */
-.voylme-hero-v4-copy[lang="hin"] {
-  --hero-width: 57%;
-  --eyebrow-size: clamp(10px, 2.65vw, 13px);
-  --title-size: clamp(20px, 5.25vw, 26px);
-  --title-line: 1.17;
-  --description-size: clamp(10.8px, 2.8vw, 13.5px);
-  --description-line: 1.48;
-
-  font-family:
-    "Noto Sans Devanagari",
-    Mangal,
-    Arial,
-    sans-serif !important;
-}
-
-/* Thai */
-.voylme-hero-v4-copy[lang="tha"] {
-  --hero-width: 57%;
-  --eyebrow-size: clamp(9.8px, 2.55vw, 12.5px);
-  --title-size: clamp(18.5px, 4.9vw, 24px);
-  --title-line: 1.12;
-  --title-gap: clamp(10px, 2.7vw, 13px);
-  --description-size: clamp(10px, 2.6vw, 12.5px);
-  --description-line: 1.42;
-
-  font-family:
-    "Noto Sans Thai",
-    Tahoma,
-    Arial,
-    sans-serif !important;
-}
-
-/* =========================================================
-   ARABIC
-   RTL copy and mirrored aircraft.
-   ========================================================= */
-
-.voylme-hero-v4-frame
-  > .voylme-hero-v4-copy[lang="ara"] {
-  --hero-width: 55%;
-  --eyebrow-size: clamp(10.7px, 2.85vw, 14px);
-  --title-size: clamp(22px, 5.8vw, 29px);
-  --title-line: 1.25;
-  --title-gap: clamp(13px, 3.4vw, 17px);
-  --description-size: clamp(11.5px, 3vw, 15px);
-  --description-line: 1.48;
-
-  left: auto !important;
-  right: var(--hero-side) !important;
-
-  justify-items: end !important;
-  align-items: end !important;
-
-  direction: rtl !important;
-  text-align: right !important;
-
-  font-family:
-    Tahoma,
-    Arial,
-    sans-serif !important;
-}
-
-.voylme-hero-v4-copy[lang="ara"]
-  > .voylme-hero-v4-eyebrow,
-.voylme-hero-v4-copy[lang="ara"]
-  > .voylme-hero-v4-title,
-.voylme-hero-v4-copy[lang="ara"]
-  > .voylme-hero-v4-description {
-  direction: rtl !important;
-  text-align: right !important;
-  letter-spacing: 0 !important;
-}
-
-.voylme-hero-v4-copy[lang="ara"]
-  > .voylme-hero-v4-eyebrow {
-  justify-self: end !important;
-}
-
-.voylme-hero-v4-frame:has(
-  > .voylme-hero-v4-copy[lang="ara"]
-) > .voylme-hero-v4-image {
-  transform: scaleX(-1) !important;
-}
-
-.voylme-hero-v4-frame:not(:has(
-  > .voylme-hero-v4-copy[lang="ara"]
-)) > .voylme-hero-v4-image {
-  transform: none !important;
-}
-
-/* =========================================================
-   SMALL PHONE SAFETY
-   ========================================================= */
-
-@media (max-width: 360px) {
-  .voylme-hero-v4 {
-    padding-inline: 4px !important;
-  }
-
-  .voylme-hero-v4-frame {
-    height: 180px !important;
-    min-height: 180px !important;
-  }
-
-  .voylme-hero-v4-frame
-    > .voylme-hero-v4-copy {
-    --hero-top: 20px;
-    --hero-bottom: 17px;
-    --hero-side: 14px;
-    --hero-width: 58%;
-
-    --eyebrow-size: 9.5px;
-    --title-size: 20px;
-    --title-gap: 11px;
-    --description-size: 10.4px;
-  }
-
-  .voylme-hero-v4-copy:is(
-    [lang="fil"],
-    [lang="msa"],
-    [lang="ind"],
-    [lang="tha"],
-    [lang="ell"]
-  ) {
-    --title-size: 17.5px;
-    --description-size: 9.5px;
-  }
-}
-
-/* =========================================================
-   TABLET AND DESKTOP
-   ========================================================= */
-
-@media (min-width: 768px) {
-  .voylme-hero-v4 {
-    padding: 16px 0 0 !important;
-  }
-
-  .voylme-hero-v4-frame {
-    height: clamp(230px, 29vw, 330px) !important;
-    min-height: 230px !important;
-    max-height: 330px !important;
-    border-radius: 30px !important;
-  }
-
-  .voylme-hero-v4-frame
-    > .voylme-hero-v4-copy {
-    --hero-top: clamp(30px, 4vw, 46px);
-    --hero-bottom: clamp(27px, 3.6vw, 42px);
-    --hero-side: clamp(28px, 4vw, 48px);
-    --hero-width: 48%;
-
-    --eyebrow-size: clamp(13px, 1.55vw, 17px);
-    --title-size: clamp(30px, 3.7vw, 46px);
-    --title-gap: clamp(18px, 2.2vw, 27px);
-    --description-size: clamp(15px, 1.8vw, 21px);
-  }
-}
-
-/* VOYLME_CLEAN_HEADER_HERO_FINAL_END */
-
-/* VOYLME_RELEASE_UI_START */
+/* VOYLME_HOMEPAGE_FINAL_SYSTEM_START */
 
 html,
 body {
+  min-height: 100%;
   overflow-x: hidden;
 }
 
-.voylme-final-viewport {
+.voylme-final-viewport,
+.voylme-final-page {
   position: relative !important;
   width: 100% !important;
-  min-height: 100dvh !important;
   height: auto !important;
+  min-height: 100dvh !important;
   overflow: visible !important;
 }
 
 .voylme-final-page {
-  min-height: 100dvh !important;
-  height: auto !important;
-  overflow: visible !important;
   padding-bottom: 96px !important;
 }
 
 /* Header controls */
+
 header button[aria-label="Choose language"],
 header button[aria-label="Choose currency"],
 header button[aria-label^="Notifications"],
 header button[aria-label="Open account menu"] {
-  width: 42px !important;
-  height: 42px !important;
-  min-width: 42px !important;
-  min-height: 42px !important;
+  width: 43px !important;
+  height: 43px !important;
+  min-width: 43px !important;
+  min-height: 43px !important;
   padding: 0 !important;
   border-radius: 999px !important;
+}
+
+header button[aria-label="Choose language"] img {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 999px !important;
+  object-fit: cover !important;
 }
 
 header button[aria-label="Choose language"] span {
@@ -2064,11 +1443,14 @@ header button[aria-label="Choose language"] span {
 .voylme-currency-button-label,
 header button[aria-label="Choose currency"] span {
   display: inline-flex !important;
-  max-width: 35px !important;
+  max-width: 37px !important;
   align-items: center !important;
   justify-content: center !important;
   overflow: hidden !important;
-  font-family: Arial, Helvetica, sans-serif !important;
+  font-family:
+    Arial,
+    "Noto Sans Arabic",
+    sans-serif !important;
   font-size: 14px !important;
   font-weight: 900 !important;
   line-height: 1 !important;
@@ -2077,39 +1459,64 @@ header button[aria-label="Choose currency"] span {
 }
 
 /* Hero */
+
+.voylme-hero-v4 {
+  width: 100% !important;
+}
+
 .voylme-hero-v4-frame {
   position: relative !important;
-  min-height: 205px !important;
+  width: 100% !important;
+  min-height: 208px !important;
   overflow: hidden !important;
+  border-radius: 0 !important;
+}
+
+.voylme-hero-v4-image {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
 }
 
 .voylme-hero-v4-copy {
+  position: absolute !important;
   top: 18px !important;
   bottom: 18px !important;
   left: 18px !important;
   right: auto !important;
+  z-index: 2 !important;
   display: grid !important;
-  grid-template-rows: auto minmax(0, 1fr) auto !important;
-  width: 54% !important;
-  max-width: 232px !important;
+  grid-template-rows:
+    auto
+    minmax(0, 1fr)
+    auto !important;
+  width: 55% !important;
+  max-width: 236px !important;
   overflow: hidden !important;
-  row-gap: 10px !important;
+  row-gap: 9px !important;
+  color: white !important;
+  text-align: left !important;
 }
 
 .voylme-hero-v4-eyebrow {
+  align-self: start !important;
   margin: 0 !important;
   font-size: clamp(10px, 2.6vw, 13px) !important;
   font-weight: 800 !important;
-  line-height: 1.2 !important;
+  line-height: 1.22 !important;
   white-space: normal !important;
 }
 
 .voylme-hero-v4-title {
+  align-self: start !important;
   margin: 0 !important;
   overflow: hidden !important;
   font-size: clamp(22px, 5.55vw, 29px) !important;
   font-weight: 900 !important;
-  line-height: 1.08 !important;
+  line-height: 1.09 !important;
   letter-spacing: -0.025em !important;
   white-space: pre-line !important;
   text-wrap: balance !important;
@@ -2117,22 +1524,24 @@ header button[aria-label="Choose currency"] span {
 
 .voylme-hero-v4-description {
   align-self: end !important;
-  width: 88% !important;
-  max-width: 88% !important;
+  width: 90% !important;
+  max-width: 90% !important;
   margin: 0 !important;
   overflow: hidden !important;
-  font-size: clamp(11px, 2.75vw, 14px) !important;
+  font-size: clamp(11px, 2.8vw, 14px) !important;
   font-weight: 500 !important;
-  line-height: 1.38 !important;
+  line-height: 1.4 !important;
   white-space: pre-line !important;
   text-wrap: pretty !important;
 }
 
+/* Arabic Hero */
+
 .voylme-hero-v4-copy[lang="ara"] {
   left: auto !important;
   right: 18px !important;
-  width: 57% !important;
-  max-width: 240px !important;
+  width: 58% !important;
+  max-width: 242px !important;
   direction: rtl !important;
   text-align: right !important;
 }
@@ -2153,20 +1562,22 @@ header button[aria-label="Choose currency"] span {
 .voylme-hero-v4-copy[lang="ara"]
 .voylme-hero-v4-title {
   font-size: clamp(24px, 6vw, 31px) !important;
-  line-height: 1.22 !important;
+  line-height: 1.23 !important;
   letter-spacing: 0 !important;
 }
 
 .voylme-hero-v4-copy[lang="ara"]
 .voylme-hero-v4-description {
-  width: 92% !important;
-  max-width: 92% !important;
+  width: 93% !important;
+  max-width: 93% !important;
+  margin-right: 0 !important;
   margin-left: auto !important;
   font-size: clamp(12px, 3vw, 15px) !important;
   line-height: 1.48 !important;
 }
 
-/* Long languages */
+/* Long European languages */
+
 .voylme-hero-v4-copy:is(
   [lang="fra"],
   [lang="deu"],
@@ -2187,7 +1598,7 @@ header button[aria-label="Choose currency"] span {
   [lang="vie"],
   [lang="isl"]
 ) {
-  width: 57% !important;
+  width: 58% !important;
 }
 
 .voylme-hero-v4-copy:is(
@@ -2211,7 +1622,10 @@ header button[aria-label="Choose currency"] span {
   [lang="isl"]
 ) .voylme-hero-v4-title {
   font-size: clamp(20px, 5vw, 26px) !important;
+  line-height: 1.11 !important;
 }
+
+/* Asian scripts */
 
 .voylme-hero-v4-copy:is(
   [lang="jpn"],
@@ -2222,22 +1636,42 @@ header button[aria-label="Choose currency"] span {
   [lang="tha"]
 ) .voylme-hero-v4-title {
   font-size: clamp(21px, 5.2vw, 27px) !important;
-  line-height: 1.15 !important;
+  line-height: 1.16 !important;
+  letter-spacing: 0 !important;
 }
 
 /* Services */
+
 .voylme-final-services-card {
-  min-height: 104px !important;
+  display: grid !important;
+  grid-template-columns:
+    repeat(6, minmax(0, 1fr)) !important;
+  min-height: 108px !important;
   height: auto !important;
   gap: 8px !important;
   padding: 9px !important;
 }
 
 .voylme-final-services-card button {
-  min-height: 45px !important;
+  min-width: 0 !important;
+  min-height: 46px !important;
   gap: 8px !important;
-  padding-inline: 9px !important;
+  padding: 8px 9px !important;
   border-radius: 14px !important;
+}
+
+.voylme-final-services-card button:nth-child(1),
+.voylme-final-services-card button:nth-child(2),
+.voylme-final-services-card button:nth-child(3) {
+  grid-column: span 2 !important;
+}
+
+.voylme-final-services-card button:nth-child(4) {
+  grid-column: 2 / span 2 !important;
+}
+
+.voylme-final-services-card button:nth-child(5) {
+  grid-column: 4 / span 2 !important;
 }
 
 .voylme-final-services-card button svg {
@@ -2249,15 +1683,17 @@ header button[aria-label="Choose currency"] span {
 }
 
 .voylme-final-services-card button span {
+  min-width: 0 !important;
   overflow: hidden !important;
-  font-size: clamp(11px, 2.9vw, 14px) !important;
+  font-size: clamp(11px, 2.85vw, 14px) !important;
   font-weight: 800 !important;
-  line-height: 1.1 !important;
+  line-height: 1.12 !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
 }
 
-/* Search form */
+/* Search */
+
 .voylme-final-search {
   overflow: visible !important;
 }
@@ -2270,12 +1706,13 @@ header button[aria-label="Choose currency"] span {
   gap: 7px !important;
 }
 
-.voylme-final-search form > div:first-child button {
+.voylme-final-search
+form > div:first-child button {
   min-width: 0 !important;
   min-height: 52px !important;
   padding-inline: 10px !important;
   overflow: hidden !important;
-  font-size: clamp(13px, 3.5vw, 17px) !important;
+  font-size: clamp(13px, 3.45vw, 17px) !important;
   font-weight: 800 !important;
   line-height: 1.15 !important;
   text-align: center !important;
@@ -2292,13 +1729,15 @@ header button[aria-label="Choose currency"] span {
   font-size: clamp(13px, 3.35vw, 16px) !important;
 }
 
-.voylme-final-search form button[type="submit"] {
+.voylme-final-search
+form button[type="submit"] {
   min-height: 56px !important;
   font-size: clamp(16px, 4vw, 20px) !important;
   font-weight: 900 !important;
 }
 
-.voylme-final-search form button[type="submit"] svg {
+.voylme-final-search
+form button[type="submit"] svg {
   width: 23px !important;
   height: 23px !important;
 }
@@ -2317,7 +1756,7 @@ header button[aria-label="Choose currency"] span {
   .voylme-hero-v4-copy {
     top: 16px !important;
     bottom: 16px !important;
-    width: 58% !important;
+    width: 59% !important;
     row-gap: 7px !important;
   }
 
@@ -2340,4 +1779,4 @@ header button[aria-label="Choose currency"] span {
   }
 }
 
-/* VOYLME_RELEASE_UI_END */
+/* VOYLME_HOMEPAGE_FINAL_SYSTEM_END */
