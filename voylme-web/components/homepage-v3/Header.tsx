@@ -108,6 +108,10 @@ export default function Header({
     },
   ];
 
+  const primaryNavigation = isArabic
+    ? ["رحلات", "فنادق", "سيارات", "أنشطة", "تأمين", "يخوت", "عروض"]
+    : ["Flights", "Hotels", "Cars", "Activities", "Insurance", "Yachts", "Deals"];
+
   return (
     <header className="v3-header">
       <div
@@ -121,14 +125,31 @@ export default function Header({
           aria-label="Voylme homepage"
         >
           <Image
-            src="/brand/voylme-logo-clean.png"
+            src="/assets/brand/logo-voylme.png"
             alt="Voylme — Your Personal Travel Assistant"
-            width={300}
-            height={100}
+            width={560}
+            height={180}
+            sizes="(max-width: 699px) 190px, 420px"
             priority
             className="v3-logo"
           />
         </a>
+
+        <nav
+          className="v3-primary-navigation"
+          aria-label={isArabic ? "الخدمات الرئيسية" : "Main services"}
+          dir={copy.direction}
+        >
+          {primaryNavigation.map((item, index) => (
+            <a
+              key={item}
+              href={index === 0 ? "#flight-search" : "#services"}
+              className={index === 0 ? "is-active" : ""}
+            >
+              {item}
+            </a>
+          ))}
+        </nav>
 
         <div className="v3-header-actions">
           <div className="v3-popup-wrap">
@@ -353,7 +374,7 @@ export default function Header({
           <div className="v3-popup-wrap">
             <button
               type="button"
-              className="v3-round-button"
+              className="v3-round-button v3-menu-button"
               aria-label={
                 isArabic
                   ? "فتح قائمة الحساب"

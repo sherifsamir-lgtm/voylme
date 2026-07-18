@@ -146,3 +146,4 @@ vite.config.ts.timestamp-*
 # VOYLME local backups and audit reports
 voylme-system-backups/
 voylme-web/audits/
+.env*

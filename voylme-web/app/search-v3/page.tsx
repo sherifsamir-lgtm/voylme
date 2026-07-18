@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import Header from "@/components/homepage-v3/Header";
 import Hero from "@/components/homepage-v3/Hero";
 import Services from "@/components/homepage-v3/Services";
+import SearchForm from "@/components/homepage-v3/SearchForm";
+import Offers from "@/components/homepage-v3/Offers";
 import {
   type V3Currency,
   type V3Language,
@@ -91,6 +93,8 @@ export default function SearchV3Page() {
 
       <Hero language={language} />
       <Services language={language} />
+      <SearchForm language={language} />
+      <Offers language={language} />
     </main>
   );
 }

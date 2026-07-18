@@ -1,1 +1,1 @@
-export { default } from "./search/page";
+export { default } from "./search-v3/page";

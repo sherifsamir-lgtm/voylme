@@ -1,0 +1,98 @@
+# VOYLME MASTER
+
+## Environment
+- Project path: ~/projects/voylme/voylme-web
+- Platform: Termux on Android
+- Hosting and preview: Vercel
+- Current branch: rebuild/homepage-clean-v3
+- Never use nano.
+- Never use npm run dev or local preview commands.
+- Keep all operations inside Termux/server.
+
+## Mandatory workflow
+1. Read this file before every step.
+2. Inspect the target file and related CSS first.
+3. Check git status and current branch.
+4. Send one safe Termux command only.
+5. Do not use long heredoc commands.
+6. Do not guess deployment commands.
+7. Run build/type checks before deployment.
+8. Review git diff before commit or push.
+9. Do not move to the next section until user approval.
+10. Update this file after every approved section.
+
+## Design source of truth
+- Use the approved homepage reference image.
+- Burgundy header.
+- Navigation: Flights, Hotels, Cars, Activities, Insurance, Yachts, Deals.
+- Hero with airplane wing and clouds.
+- Search form inside Hero.
+- Four trust badges.
+- Large service cards.
+- Burgundy footer.
+- Mobile bottom navigation.
+- Do not modify or recreate the approved Voylme logo.
+
+## Launch services
+- Flights
+- Hotels
+- Cars
+- Activities
+- Insurance
+- Yachts
+- Visa is excluded.
+
+## Completed booking flow
+- Flight Details
+- Passengers
+- Extras
+- Payment
+- Confirmation
+- Do not revisit unless requested.
+
+## Current section
+- Section: Header
+- Status: Modified but not visually approved.
+- Next: verify git/build/deployment workflow, deploy to Vercel, review screenshot.
+
+## Deployment safety
+- Before any deployment command, inspect:
+  git status --short
+  git branch --show-current
+  git remote -v
+  cat package.json
+- Never assume the Vercel deployment workflow.
+
+## Build environment
+- Android/Termux uses Webpack for builds.
+- Never use: next build (Turbopack).
+- Always use: npx next build --webpack
+
+## Proven project rules
+- Read VOYLME_MASTER.md before every task.
+- Verify: git status --short
+- Verify: git branch --show-current
+- Use one safe Termux command per step.
+- Never use nano.
+- Never use long cat <<EOF blocks.
+- Always inspect the target file before editing.
+- On Android/Termux always build with: npx next build --webpack
+- Never use Turbopack on Android/Termux.
+- Never assume the Vercel deployment workflow; verify it first.
+- Update this file whenever a new lesson or rule is discovered.
+
+## Known Commands
+
+### Check project status
+git status --short
+
+git branch --show-current
+
+### Build (Android/Termux)
+npx next build --webpack
+
+### Forbidden Commands
+- next build (uses Turbopack on Android)
+- npm run dev
+- nano
+- Long cat <<EOF blocks

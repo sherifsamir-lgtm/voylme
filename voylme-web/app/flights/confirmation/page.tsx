@@ -210,7 +210,7 @@ export default function BookingConfirmationPage() {
         </section>
 
         <Link
-          href="/my-trips"
+          href="/"
           className="flex h-16 w-full items-center justify-center rounded-[22px] bg-[#660033] text-[17px] font-extrabold text-white shadow-md"
         >
           View My Trips
