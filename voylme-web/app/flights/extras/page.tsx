@@ -13,19 +13,18 @@ import {
   Check,
 } from "lucide-react";
 
+import {
+  bookingParamsToUrl,
+  getPassengerCount,
+  readBookingParams,
+} from "@/lib/voylme/booking/query";
+
 type ExtraOption = {
   id: string;
   title: string;
   description: string;
   price: number;
   icon: "baggage" | "seat" | "meal" | "protection";
-};
-
-const flightPrices: Record<string, number> = {
-  "1": 1245,
-  "2": 1095,
-  "3": 1180,
-  "4": 1320,
 };
 
 const extras: ExtraOption[] = [
@@ -83,12 +82,14 @@ function ExtraIcon({
 
 function FlightExtrasPageContent() {
   const searchParams = useSearchParams();
-  const flightId = searchParams.get("flight") ?? "1";
+  const booking = readBookingParams(searchParams);
+  const flightId = booking.flight;
 
-  const basePrice = useMemo(
-    () => flightPrices[flightId] ?? flightPrices["1"],
-    [flightId]
-  );
+  const passengerCount =
+    getPassengerCount(booking);
+
+  const basePrice =
+    booking.flightTotal * passengerCount;
 
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
 
@@ -110,12 +111,18 @@ function FlightExtrasPageContent() {
 
   const totalPrice = basePrice + extrasTotal;
 
+  const bookingQuery =
+    bookingParamsToUrl(booking, {
+      extras: extrasTotal,
+      paymentTotal: totalPrice,
+    });
+
   return (
     <main className="min-h-screen bg-[#f7f5f6] pb-[116px]">
       <header className="sticky top-0 z-40 border-b border-gray-200 bg-white">
         <div className="mx-auto flex h-[68px] w-full max-w-[430px] items-center justify-between px-4">
           <Link
-            href={`/flights/passengers?flight=${flightId}`}
+            href={`/flights/passengers?${bookingQuery}`}
             aria-label="Back to passenger details"
             className="flex h-10 w-10 items-center justify-center rounded-full border border-[#660033]/20 text-[#660033]"
           >
@@ -145,11 +152,13 @@ function FlightExtrasPageContent() {
           <div className="mt-1 flex items-end justify-between">
             <div>
               <p className="text-[16px] font-bold">
-                Dubai to Cairo
+                {booking.fromCity} to {booking.toCity}
               </p>
 
               <p className="mt-1 text-[11px] text-white/80">
-                Flight #{flightId} · 1 passenger
+                {booking.airline} · {booking.flightCode} ·{" "}
+                {passengerCount} passenger
+                {passengerCount === 1 ? "" : "s"}
               </p>
             </div>
 
@@ -283,7 +292,7 @@ function FlightExtrasPageContent() {
           </div>
 
           <Link
-            href={`/flights/payment?flight=${flightId}&extras=${extrasTotal}`}
+            href={`/flights/payment?${bookingQuery}`}
             className="flex h-[52px] flex-1 items-center justify-center gap-2 rounded-full bg-[#660033] text-[14px] font-bold text-white shadow-md"
           >
             Continue to Payment

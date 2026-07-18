@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { Suspense } from "react";
+import { useParams, useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
   Plane,
@@ -13,6 +14,12 @@ import {
   ShieldCheck,
   Utensils,
 } from "lucide-react";
+
+import {
+  bookingParamsToUrl,
+  getPassengerCount,
+  readBookingParams,
+} from "@/lib/voylme/booking/query";
 
 type FlightDetails = {
   id: string;
@@ -103,16 +110,33 @@ const flights: Record<string, FlightDetails> = {
   },
 };
 
-export default function FlightDetailsPage() {
+function FlightDetailsPageContent() {
   const params = useParams<{ id: string }>();
+  const searchParams = useSearchParams();
+
   const flight = flights[params.id] ?? flights["1"];
+  const booking = readBookingParams(
+    searchParams,
+    params.id
+  );
+
+  const passengerCount =
+    getPassengerCount(booking);
+
+  const totalPrice =
+    booking.flightTotal * passengerCount;
+
+  const bookingQuery =
+    bookingParamsToUrl(booking, {
+      paymentTotal: totalPrice,
+    });
 
   return (
     <main className="min-h-screen bg-[#f7f5f6] pb-[116px]">
       <header className="sticky top-0 z-40 border-b border-gray-200 bg-white">
         <div className="mx-auto flex h-[68px] w-full max-w-[430px] items-center justify-between px-4">
           <Link
-            href="/flights/results"
+            href={`/flights/results?${bookingQuery}`}
             aria-label="Back to flight results"
             className="flex h-10 w-10 items-center justify-center rounded-full border border-[#660033]/20 text-[#660033]"
           >
@@ -143,12 +167,12 @@ export default function FlightDetailsPage() {
                 </p>
 
                 <p className="mt-1 text-[15px] font-bold">
-                  Dubai to Cairo
+                  {booking.fromCity} to {booking.toCity}
                 </p>
               </div>
 
               <div className="rounded-full bg-white/15 px-3 py-1.5 text-[11px] font-bold">
-                Economy
+                {booking.cabinClass}
               </div>
             </div>
           </div>
@@ -162,11 +186,11 @@ export default function FlightDetailsPage() {
 
                 <div>
                   <h2 className="text-[15px] font-extrabold text-slate-900">
-                    {flight.airline}
+                    {booking.airline}
                   </h2>
 
                   <p className="text-[11px] text-gray-500">
-                    {flight.flightNumber} · {flight.aircraft}
+                    {booking.flightCode} · {flight.aircraft}
                   </p>
                 </div>
               </div>
@@ -179,21 +203,21 @@ export default function FlightDetailsPage() {
             <div className="mt-6 grid grid-cols-[1fr_auto_1fr] items-center gap-3">
               <div>
                 <p className="text-[24px] font-black text-slate-900">
-                  {flight.departureTime}
+                  {booking.departureTime}
                 </p>
 
                 <p className="text-[14px] font-extrabold text-[#660033]">
-                  {flight.departureAirport}
+                  {booking.from}
                 </p>
 
                 <p className="mt-1 text-[11px] text-gray-500">
-                  {flight.departureCity}
+                  {booking.fromCity}
                 </p>
               </div>
 
               <div className="min-w-[118px] text-center">
                 <p className="mb-2 text-[10px] text-gray-500">
-                  {flight.duration}
+                  {booking.duration}
                 </p>
 
                 <div className="relative h-[1px] bg-gray-300">
@@ -208,21 +232,21 @@ export default function FlightDetailsPage() {
                 </div>
 
                 <p className="mt-2 text-[10px] font-bold text-[#660033]">
-                  {flight.stops}
+                  {booking.stops}
                 </p>
               </div>
 
               <div className="text-right">
                 <p className="text-[24px] font-black text-slate-900">
-                  {flight.arrivalTime}
+                  {booking.arrivalTime}
                 </p>
 
                 <p className="text-[14px] font-extrabold text-[#660033]">
-                  {flight.arrivalAirport}
+                  {booking.to}
                 </p>
 
                 <p className="mt-1 text-[11px] text-gray-500">
-                  {flight.arrivalCity}
+                  {booking.toCity}
                 </p>
               </div>
             </div>
@@ -237,7 +261,7 @@ export default function FlightDetailsPage() {
                   </p>
 
                   <p className="text-[12px] font-bold text-slate-800">
-                    {flight.duration}
+                    {booking.duration}
                   </p>
                 </div>
               </div>
@@ -251,7 +275,7 @@ export default function FlightDetailsPage() {
                   </p>
 
                   <p className="text-[12px] font-bold text-slate-800">
-                    {flight.stops}
+                    {booking.stops}
                   </p>
                 </div>
               </div>
@@ -281,7 +305,7 @@ export default function FlightDetailsPage() {
               </div>
 
               <p className="text-[13px] font-extrabold text-[#660033]">
-                {flight.checkedBaggage}
+                {booking.baggage}
               </p>
             </div>
 
@@ -351,11 +375,12 @@ export default function FlightDetailsPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[11px] text-gray-500">
-                Total for 1 passenger
+                Total for {passengerCount} passenger
+              {passengerCount === 1 ? "" : "s"}
               </p>
 
               <p className="mt-1 text-[24px] font-black text-[#660033]">
-                AED {flight.price}
+                AED {totalPrice}
               </p>
             </div>
 
@@ -380,12 +405,12 @@ export default function FlightDetailsPage() {
             </p>
 
             <p className="text-[18px] font-black text-[#660033]">
-              AED {flight.price}
+              AED {totalPrice}
             </p>
           </div>
 
           <Link
-            href={`/flights/passengers?flight=${flight.id}`}
+            href={`/flights/passengers?${bookingQuery}`}
             className="flex h-[52px] flex-1 items-center justify-center gap-2 rounded-full bg-[#660033] text-[14px] font-bold text-white shadow-md"
           >
             Continue
@@ -394,5 +419,21 @@ export default function FlightDetailsPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function FlightDetailsPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-screen items-center justify-center bg-[#f7f5f6]">
+          <p className="font-bold text-[#660033]">
+            Loading flight details...
+          </p>
+        </main>
+      }
+    >
+      <FlightDetailsPageContent />
+    </Suspense>
   );
 }

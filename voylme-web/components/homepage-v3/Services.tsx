@@ -1,81 +1,114 @@
 "use client";
 
-import Image from "next/image";
-import type { V3Language } from "./content";
+import {
+  Binoculars,
+  CarFront,
+  Hotel,
+  PlaneTakeoff,
+  ShieldCheck,
+  ShipWheel,
+} from "lucide-react";
 
-type ServicesProps = {
+import { V3_COPY, type V3Language } from "./content";
+
+type Props = {
   language: V3Language;
 };
 
-const SERVICES = [
-  {
-    id: "flights",
-    image: "/assets/home/services/images/service-flights.png",
-  },
-  {
-    id: "hotels",
-    image: "/assets/home/services/images/service-hotels.png",
-  },
-  {
-    id: "cars",
-    image: "/assets/home/services/images/service-cars.png",
-  },
-  {
-    id: "activities",
-    image: "/assets/home/services/images/service-activities.jpeg",
-  },
-  {
-    id: "insurance",
-    image: "/assets/home/services/images/service-insurance.png",
-  },
-  {
-    id: "yachts",
-    image: "/assets/home/services/images/service-yachts.png",
-  },
-] as const;
+export default function Services({ language }: Props) {
+  const copy = V3_COPY[language];
 
-export default function Services({ language }: ServicesProps) {
+  const services = [
+    {
+      key: "flights",
+      label: copy.services.flights,
+      icon: PlaneTakeoff,
+      href: "/search",
+      active: true,
+    },
+    {
+      key: "hotels",
+      label: copy.services.hotels,
+      icon: Hotel,
+      href: "#",
+      active: false,
+    },
+    {
+      key: "cars",
+      label: copy.services.cars,
+      icon: CarFront,
+      href: "#",
+      active: false,
+    },
+    {
+      key: "activities",
+      label: copy.services.activities,
+      icon: Binoculars,
+      href: "#",
+      active: false,
+    },
+    {
+      key: "insurance",
+      label: copy.services.insurance,
+      icon: ShieldCheck,
+      href: "#",
+      active: false,
+    },
+    {
+      key: "yachts",
+      label: copy.services.yachts,
+      icon: ShipWheel,
+      href: "#",
+      active: false,
+    },
+  ] as const;
+
   return (
     <section
-      aria-label={language === "ar" ? "خدمات السفر" : "Travel services"}
-      className="w-full bg-white px-4 py-5"
-      dir={language === "ar" ? "rtl" : "ltr"}
+      className="v3-services-section"
+      dir={copy.direction}
+      aria-label={
+        language === "ar"
+          ? "خدمات السفر"
+          : "Travel services"
+      }
     >
-      <div className="mx-auto grid w-full max-w-[430px] grid-cols-2 gap-3">
-        {SERVICES.map((service) => {
-          const buttonImage =
-            `/assets/home/services/buttons/${language}/` +
-            `button-${service.id}-${language}.png`;
+      <div className="v3-services-grid">
+        {services.map((service) => {
+          const Icon = service.icon;
 
           return (
-            <button
-              key={service.id}
-              type="button"
-              className="group relative aspect-[1.28/1] w-full overflow-hidden rounded-[18px] bg-[#f5f5f5] shadow-[0_4px_14px_rgba(0,0,0,0.09)] transition-transform duration-200 active:scale-[0.98]"
-              aria-label={service.id}
+            <a
+              key={service.key}
+              href={service.href}
+              className={
+                service.active
+                  ? "v3-service-card v3-service-card-active"
+                  : "v3-service-card"
+              }
+              aria-label={service.label}
+              onClick={(event) => {
+                if (!service.active) {
+                  event.preventDefault();
+                }
+              }}
             >
-              <Image
-                src={service.image}
-                alt=""
-                fill
-                sizes="(max-width: 430px) 50vw, 205px"
-                className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-              />
+              <span className="v3-service-icon">
+                <Icon size={27} strokeWidth={2} />
+              </span>
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+              <span className="v3-service-label">
+                {service.label}
+              </span>
 
-              <div className="absolute inset-x-3 bottom-3">
-                <div className="relative mx-auto h-[36px] w-full">
-                  <Image
-                    src={buttonImage}
-                    alt=""
-                    fill
-                    sizes="180px"
-                    className="object-contain"
-                  />
-                </div>
-              </div>
-            </button>
+              {!service.active && (
+                <small className="v3-service-coming">
+                  {language === "ar"
+                    ? "قريبًا"
+                    : "Soon"}
+                </small>
+              )}
+            </a>
           );
         })}
       </div>

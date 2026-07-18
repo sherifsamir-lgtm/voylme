@@ -11,6 +11,11 @@ import {
   WalletCards,
 } from "lucide-react";
 
+import {
+  bookingParamsToUrl,
+  readBookingParams,
+} from "@/lib/voylme/booking/query";
+
 type PaymentMethodId =
   | "card"
   | "apple-pay"
@@ -75,11 +80,17 @@ const paymentMethods: PaymentMethod[] = [
 function PaymentPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const booking = readBookingParams(searchParams);
 
-  const flightPrice = Number(searchParams.get("flightPrice")) || 1245;
-  const extrasPrice = Number(searchParams.get("extras")) || 0;
-  const total = flightPrice + extrasPrice;
-  const flightId = searchParams.get("flight") || "1";
+  const flightPrice =
+    booking.paymentTotal - booking.extras;
+
+  const extrasPrice = booking.extras;
+  const total = booking.paymentTotal;
+  const flightId = booking.flight;
+
+  const bookingQuery =
+    bookingParamsToUrl(booking);
 
   const [selectedMethod, setSelectedMethod] =
     useState<PaymentMethodId>("card");
@@ -123,7 +134,13 @@ function PaymentPageContent() {
 
     setTimeout(() => {
       router.push(
-        `/flights/confirmation?flight=${flightId}&total=${total}&method=${selectedMethod}`
+        `/flights/confirmation?${bookingParamsToUrl(
+          booking,
+          {
+            paymentTotal: total,
+            method: selectedMethod,
+          }
+        )}`
       );
     }, 900);
   };
@@ -133,7 +150,7 @@ function PaymentPageContent() {
       <header className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white">
         <div className="relative mx-auto flex h-[82px] w-full max-w-[430px] items-center justify-center px-4">
           <Link
-            href={`/flights/extras?flight=${flightId}`}
+            href={`/flights/extras?${bookingQuery}`}
             aria-label="Back to extras"
             className="absolute left-4 flex h-12 w-12 items-center justify-center rounded-full border border-[#e5d9df] bg-white text-[#80003f]"
           >
@@ -154,15 +171,67 @@ function PaymentPageContent() {
 
       <div className="mx-auto w-full max-w-[430px] space-y-5 px-4 py-5">
         <section className="w-full overflow-hidden rounded-[28px] bg-[#80003f] px-5 py-6 text-white shadow-lg">
-          <p className="text-sm text-white/75">Total amount</p>
+          <p className="text-sm text-white/75">
+            Total amount
+          </p>
 
           <p className="mt-3 text-[38px] font-extrabold leading-none">
             AED {total}
           </p>
 
-          <p className="mt-5 text-sm text-white/80">
-            Flight AED {flightPrice} · Extras AED {extrasPrice}
-          </p>
+          <div className="mt-5 space-y-3 rounded-[20px] bg-white/10 p-4 text-sm">
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-white/75">
+                Base fare
+              </span>
+
+              <span className="font-bold">
+                AED {booking.baseFare}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-white/75">
+                Taxes
+              </span>
+
+              <span className="font-bold">
+                AED {booking.taxes}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-white/75">
+                Service fee
+              </span>
+
+              <span className="font-bold">
+                AED {booking.serviceFee}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-white/75">
+                Extras
+              </span>
+
+              <span className="font-bold">
+                AED {extrasPrice}
+              </span>
+            </div>
+
+            <div className="border-t border-white/20 pt-3">
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-extrabold">
+                  Total
+                </span>
+
+                <span className="text-lg font-extrabold">
+                  AED {total}
+                </span>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section className="w-full overflow-hidden rounded-[28px] bg-white p-5 shadow-sm">

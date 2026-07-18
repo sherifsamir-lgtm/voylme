@@ -17,18 +17,17 @@ import PassengerFields, {
   type PassengerFormData,
 } from "@/components/passenger/PassengerFields";
 
+import {
+  bookingParamsToUrl,
+  getPassengerCount,
+  readBookingParams,
+} from "@/lib/voylme/booking/query";
+
 type PassengerRecord = {
   id: string;
   type: PassengerType;
   index: number;
   data: PassengerFormData;
-};
-
-const flightPrices: Record<string, number> = {
-  "1": 1245,
-  "2": 1095,
-  "3": 1180,
-  "4": 1320,
 };
 
 function createEmptyPassenger(
@@ -112,32 +111,23 @@ function isPassengerComplete(
 function PassengerDetailsPageContent() {
   const searchParams = useSearchParams();
 
-  const flightId =
-    searchParams.get("flight") ?? "1";
+  const booking = readBookingParams(searchParams);
+  const flightId = booking.flight;
 
-  const adults = Math.max(
-    1,
-    Number(searchParams.get("adults") ?? "1")
-  );
-
-  const children = Math.max(
-    0,
-    Number(searchParams.get("children") ?? "0")
-  );
-
-  const infants = Math.max(
-    0,
-    Number(searchParams.get("infants") ?? "0")
-  );
+  const adults = booking.adults;
+  const children = booking.children;
+  const infants = booking.infants;
 
   const passengersCount =
-    adults + children + infants;
-
-  const basePrice =
-    flightPrices[flightId] ?? flightPrices["1"];
+    getPassengerCount(booking);
 
   const totalPrice =
-    basePrice * passengersCount;
+    booking.flightTotal * passengersCount;
+
+  const bookingQuery =
+    bookingParamsToUrl(booking, {
+      paymentTotal: totalPrice,
+    });
 
   const [passengers, setPassengers] =
     useState<PassengerRecord[]>(
@@ -190,7 +180,7 @@ function PassengerDetailsPageContent() {
       <header className="sticky top-0 z-40 border-b border-gray-200 bg-white">
         <div className="mx-auto flex h-[68px] max-w-[430px] items-center justify-between px-4">
           <Link
-            href={`/flights/results/${flightId}`}
+            href={`/flights/results/${flightId}?${bookingQuery}`}
             className="flex h-10 w-10 items-center justify-center rounded-full border border-[#660033]/20 text-[#660033]"
           >
             <ArrowLeft size={20} />
@@ -221,11 +211,11 @@ function PassengerDetailsPageContent() {
           <div className="mt-2 flex items-center justify-between">
             <div>
               <h2 className="font-bold">
-                Dubai → Cairo
+                {booking.from} → {booking.to}
               </h2>
 
               <p className="text-xs opacity-80">
-                Flight #{flightId}
+                {booking.airline} · {booking.flightCode}
               </p>
             </div>
 
@@ -318,7 +308,7 @@ function PassengerDetailsPageContent() {
 
           {canContinue ? (
             <Link
-              href={`/flights/extras?flight=${flightId}`}
+              href={`/flights/extras?${bookingQuery}`}
               className="flex h-[52px] flex-1 items-center justify-center gap-2 rounded-full bg-[#660033] text-[14px] font-bold text-white"
             >
               Continue
