@@ -143,3 +143,6 @@ vite.config.ts.timestamp-*
 .vite/
 /backups/
 .vercel
+# VOYLME local backups and audit reports
+voylme-system-backups/
+voylme-web/audits/
