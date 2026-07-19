@@ -2,19 +2,19 @@
 
 import { useEffect, useState } from "react";
 
-import Header from "@/components/homepage-clean/Header";
-import Hero from "@/components/homepage-clean/Hero";
-import Services from "@/components/homepage-clean/Services";
-import SearchForm from "@/components/homepage-clean/SearchForm";
-import Offers from "@/components/homepage-clean/Offers";
-import WhyVoylme from "@/components/homepage-clean/WhyVoylme";
-import PopularDestinations from "@/components/homepage-clean/PopularDestinations";
-import TravelPartners from "@/components/homepage-clean/TravelPartners";
 import AppDownload from "@/components/homepage-clean/AppDownload";
 import Footer from "@/components/homepage-clean/Footer";
-import {
-  type V3Currency,
-  type V3Language,
+import Header from "@/components/homepage-clean/Header";
+import Offers from "@/components/homepage-clean/Offers";
+import PopularDestinations from "@/components/homepage-clean/PopularDestinations";
+import SearchForm from "@/components/homepage-clean/SearchForm";
+import Services from "@/components/homepage-clean/Services";
+import TravelPartners from "@/components/homepage-clean/TravelPartners";
+import WhyVoylme from "@/components/homepage-clean/WhyVoylme";
+
+import type {
+  V3Currency,
+  V3Language,
 } from "@/components/homepage-clean/content";
 
 const LANGUAGE_KEY = "voylme-language";
@@ -25,9 +25,7 @@ export default function SearchV3Page() {
     useState<V3Language>("en");
 
   const [currency, setCurrency] =
-    useState<V3Currency>("AED");
-
-  const [ready, setReady] = useState(false);
+    useState<V3Currency>("USD");
 
   useEffect(() => {
     const storedLanguage =
@@ -49,8 +47,6 @@ export default function SearchV3Page() {
     ) {
       setCurrency(storedCurrency);
     }
-
-    setReady(true);
   }, []);
 
   function handleLanguageChange(
@@ -61,6 +57,10 @@ export default function SearchV3Page() {
       LANGUAGE_KEY,
       value,
     );
+
+    document.documentElement.lang = value;
+    document.documentElement.dir =
+      value === "ar" ? "rtl" : "ltr";
   }
 
   function handleCurrencyChange(
@@ -73,22 +73,10 @@ export default function SearchV3Page() {
     );
   }
 
-  if (!ready) {
-    return (
-      <main className="v3-loading-screen">
-        <div className="v3-loading-mark">
-          VOYLME
-        </div>
-        <Footer language={language} currency={currency} />
-</main>
-    );
-  }
-
   return (
     <main
-      className="v3-homepage"
       dir={language === "ar" ? "rtl" : "ltr"}
-      lang={language}
+      className="min-h-screen overflow-x-hidden bg-white text-gray-950"
     >
       <Header
         language={language}
@@ -97,15 +85,22 @@ export default function SearchV3Page() {
         onCurrencyChange={handleCurrencyChange}
       />
 
-      <Hero language={language} />
       <Services language={language} />
-      <SearchForm language={language} />
+
+      <div className="relative z-30 -mt-3 bg-white px-4 pb-4 pt-6 sm:px-8">
+        <SearchForm language={language} />
+      </div>
+
       <Offers language={language} />
       <WhyVoylme language={language} />
       <PopularDestinations language={language} />
       <TravelPartners language={language} />
       <AppDownload language={language} />
-      <Footer language={language} currency={currency} />
+
+      <Footer
+        language={language}
+        currency={currency}
+      />
     </main>
   );
 }
