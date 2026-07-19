@@ -5,7 +5,80 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 type LanguageCode = "en" | "ar";
-type CurrencyCode = "AED" | "USD";
+
+type CurrencyCode =
+  | "AED"
+  | "USD"
+  | "EUR"
+  | "GBP"
+  | "SAR"
+  | "QAR"
+  | "KWD"
+  | "BHD"
+  | "OMR"
+  | "EGP"
+  | "JOD"
+  | "LBP"
+  | "SYP"
+  | "IQD"
+  | "MAD"
+  | "DZD"
+  | "TND"
+  | "TRY"
+  | "INR"
+  | "PKR"
+  | "NPR"
+  | "BDT"
+  | "PHP"
+  | "LKR"
+  | "IDR"
+  | "MYR"
+  | "SGD"
+  | "THB"
+  | "VND"
+  | "CNY"
+  | "JPY"
+  | "KRW"
+  | "HKD"
+  | "CHF"
+  | "NOK"
+  | "SEK"
+  | "DKK"
+  | "PLN"
+  | "CZK"
+  | "HUF"
+  | "RON"
+  | "CAD"
+  | "MXN"
+  | "BRL"
+  | "CLP"
+  | "COP"
+  | "PEN"
+  | "AUD"
+  | "NZD"
+  | "ZAR"
+  | "NGN"
+  | "KES"
+  | "GHS"
+  | "ETB";
+
+type CurrencyGroupId =
+  | "popular"
+  | "gulf"
+  | "arab"
+  | "asia"
+  | "europe"
+  | "americas"
+  | "oceania"
+  | "africa";
+
+type CurrencyItem = {
+  code: CurrencyCode;
+  flag: string;
+  label: string;
+  group: CurrencyGroupId;
+};
+
 type OpenPanel = "language" | "currency" | "notifications" | "menu" | null;
 
 type HeaderProps = {
@@ -35,22 +108,390 @@ const languages: Array<{
   },
 ];
 
-const currencies: Array<{
-  code: CurrencyCode;
-  label: string;
-  icon: string;
+const currencyGroups: Array<{
+  id: CurrencyGroupId;
+  labelEn: string;
+  labelAr: string;
 }> = [
   {
+    id: "popular",
+    labelEn: "Popular",
+    labelAr: "الأكثر استخدامًا",
+  },
+  {
+    id: "gulf",
+    labelEn: "Gulf",
+    labelAr: "دول الخليج",
+  },
+  {
+    id: "arab",
+    labelEn: "Arab Countries",
+    labelAr: "الدول العربية",
+  },
+  {
+    id: "asia",
+    labelEn: "Asia",
+    labelAr: "آسيا",
+  },
+  {
+    id: "europe",
+    labelEn: "Europe",
+    labelAr: "أوروبا",
+  },
+  {
+    id: "americas",
+    labelEn: "Americas",
+    labelAr: "الأمريكتان",
+  },
+  {
+    id: "oceania",
+    labelEn: "Oceania",
+    labelAr: "أوقيانوسيا",
+  },
+  {
+    id: "africa",
+    labelEn: "Africa",
+    labelAr: "أفريقيا",
+  },
+];
+
+const currencies: CurrencyItem[] = [
+  {
     code: "AED",
+    flag: "🇦🇪",
     label: "UAE Dirham",
-    icon: "/assets/icons/header/icon-currency-aed.png",
+    group: "popular",
   },
   {
     code: "USD",
+    flag: "🇺🇸",
     label: "US Dollar",
-    icon: "/assets/icons/header/icon-currency-dollar.png",
+    group: "popular",
+  },
+  {
+    code: "EUR",
+    flag: "🇪🇺",
+    label: "Euro",
+    group: "popular",
+  },
+  {
+    code: "GBP",
+    flag: "🇬🇧",
+    label: "British Pound",
+    group: "popular",
+  },
+
+  {
+    code: "SAR",
+    flag: "🇸🇦",
+    label: "Saudi Riyal",
+    group: "gulf",
+  },
+  {
+    code: "QAR",
+    flag: "🇶🇦",
+    label: "Qatari Riyal",
+    group: "gulf",
+  },
+  {
+    code: "KWD",
+    flag: "🇰🇼",
+    label: "Kuwaiti Dinar",
+    group: "gulf",
+  },
+  {
+    code: "BHD",
+    flag: "🇧🇭",
+    label: "Bahraini Dinar",
+    group: "gulf",
+  },
+  {
+    code: "OMR",
+    flag: "🇴🇲",
+    label: "Omani Rial",
+    group: "gulf",
+  },
+
+  {
+    code: "EGP",
+    flag: "🇪🇬",
+    label: "Egyptian Pound",
+    group: "arab",
+  },
+  {
+    code: "JOD",
+    flag: "🇯🇴",
+    label: "Jordanian Dinar",
+    group: "arab",
+  },
+  {
+    code: "LBP",
+    flag: "🇱🇧",
+    label: "Lebanese Pound",
+    group: "arab",
+  },
+  {
+    code: "SYP",
+    flag: "🇸🇾",
+    label: "Syrian Pound",
+    group: "arab",
+  },
+  {
+    code: "IQD",
+    flag: "🇮🇶",
+    label: "Iraqi Dinar",
+    group: "arab",
+  },
+  {
+    code: "MAD",
+    flag: "🇲🇦",
+    label: "Moroccan Dirham",
+    group: "arab",
+  },
+  {
+    code: "DZD",
+    flag: "🇩🇿",
+    label: "Algerian Dinar",
+    group: "arab",
+  },
+  {
+    code: "TND",
+    flag: "🇹🇳",
+    label: "Tunisian Dinar",
+    group: "arab",
+  },
+
+  {
+    code: "TRY",
+    flag: "🇹🇷",
+    label: "Turkish Lira",
+    group: "asia",
+  },
+  {
+    code: "INR",
+    flag: "🇮🇳",
+    label: "Indian Rupee",
+    group: "asia",
+  },
+  {
+    code: "PKR",
+    flag: "🇵🇰",
+    label: "Pakistani Rupee",
+    group: "asia",
+  },
+  {
+    code: "NPR",
+    flag: "🇳🇵",
+    label: "Nepalese Rupee",
+    group: "asia",
+  },
+  {
+    code: "BDT",
+    flag: "🇧🇩",
+    label: "Bangladeshi Taka",
+    group: "asia",
+  },
+  {
+    code: "PHP",
+    flag: "🇵🇭",
+    label: "Philippine Peso",
+    group: "asia",
+  },
+  {
+    code: "LKR",
+    flag: "🇱🇰",
+    label: "Sri Lankan Rupee",
+    group: "asia",
+  },
+  {
+    code: "IDR",
+    flag: "🇮🇩",
+    label: "Indonesian Rupiah",
+    group: "asia",
+  },
+  {
+    code: "MYR",
+    flag: "🇲🇾",
+    label: "Malaysian Ringgit",
+    group: "asia",
+  },
+  {
+    code: "SGD",
+    flag: "🇸🇬",
+    label: "Singapore Dollar",
+    group: "asia",
+  },
+  {
+    code: "THB",
+    flag: "🇹🇭",
+    label: "Thai Baht",
+    group: "asia",
+  },
+  {
+    code: "VND",
+    flag: "🇻🇳",
+    label: "Vietnamese Dong",
+    group: "asia",
+  },
+  {
+    code: "CNY",
+    flag: "🇨🇳",
+    label: "Chinese Yuan",
+    group: "asia",
+  },
+  {
+    code: "JPY",
+    flag: "🇯🇵",
+    label: "Japanese Yen",
+    group: "asia",
+  },
+  {
+    code: "KRW",
+    flag: "🇰🇷",
+    label: "South Korean Won",
+    group: "asia",
+  },
+  {
+    code: "HKD",
+    flag: "🇭🇰",
+    label: "Hong Kong Dollar",
+    group: "asia",
+  },
+
+  {
+    code: "CHF",
+    flag: "🇨🇭",
+    label: "Swiss Franc",
+    group: "europe",
+  },
+  {
+    code: "NOK",
+    flag: "🇳🇴",
+    label: "Norwegian Krone",
+    group: "europe",
+  },
+  {
+    code: "SEK",
+    flag: "🇸🇪",
+    label: "Swedish Krona",
+    group: "europe",
+  },
+  {
+    code: "DKK",
+    flag: "🇩🇰",
+    label: "Danish Krone",
+    group: "europe",
+  },
+  {
+    code: "PLN",
+    flag: "🇵🇱",
+    label: "Polish Zloty",
+    group: "europe",
+  },
+  {
+    code: "CZK",
+    flag: "🇨🇿",
+    label: "Czech Koruna",
+    group: "europe",
+  },
+  {
+    code: "HUF",
+    flag: "🇭🇺",
+    label: "Hungarian Forint",
+    group: "europe",
+  },
+  {
+    code: "RON",
+    flag: "🇷🇴",
+    label: "Romanian Leu",
+    group: "europe",
+  },
+
+  {
+    code: "CAD",
+    flag: "🇨🇦",
+    label: "Canadian Dollar",
+    group: "americas",
+  },
+  {
+    code: "MXN",
+    flag: "🇲🇽",
+    label: "Mexican Peso",
+    group: "americas",
+  },
+  {
+    code: "BRL",
+    flag: "🇧🇷",
+    label: "Brazilian Real",
+    group: "americas",
+  },
+  {
+    code: "CLP",
+    flag: "🇨🇱",
+    label: "Chilean Peso",
+    group: "americas",
+  },
+  {
+    code: "COP",
+    flag: "🇨🇴",
+    label: "Colombian Peso",
+    group: "americas",
+  },
+  {
+    code: "PEN",
+    flag: "🇵🇪",
+    label: "Peruvian Sol",
+    group: "americas",
+  },
+
+  {
+    code: "AUD",
+    flag: "🇦🇺",
+    label: "Australian Dollar",
+    group: "oceania",
+  },
+  {
+    code: "NZD",
+    flag: "🇳🇿",
+    label: "New Zealand Dollar",
+    group: "oceania",
+  },
+
+  {
+    code: "ZAR",
+    flag: "🇿🇦",
+    label: "South African Rand",
+    group: "africa",
+  },
+  {
+    code: "NGN",
+    flag: "🇳🇬",
+    label: "Nigerian Naira",
+    group: "africa",
+  },
+  {
+    code: "KES",
+    flag: "🇰🇪",
+    label: "Kenyan Shilling",
+    group: "africa",
+  },
+  {
+    code: "GHS",
+    flag: "🇬🇭",
+    label: "Ghanaian Cedi",
+    group: "africa",
+  },
+  {
+    code: "ETB",
+    flag: "🇪🇹",
+    label: "Ethiopian Birr",
+    group: "africa",
   },
 ];
+
+const validCurrencyCodes = new Set<CurrencyCode>(
+  currencies.map((item) => item.code),
+);
 
 const menuItems = [
   {
@@ -100,9 +541,11 @@ export default function Header({
   const [language, setLanguage] = useState<LanguageCode>(
     controlledLanguage ?? "en",
   );
+
   const [currency, setCurrency] = useState<CurrencyCode>(
     controlledCurrency ?? "AED",
   );
+
   const [openPanel, setOpenPanel] = useState<OpenPanel>(null);
   const [isSignedIn, setIsSignedIn] = useState(false);
 
@@ -127,9 +570,7 @@ export default function Header({
       "voylme-language",
     ) as LanguageCode | null;
 
-    const storedCurrency = localStorage.getItem(
-      "voylme-currency",
-    ) as CurrencyCode | null;
+    const storedCurrency = localStorage.getItem("voylme-currency");
 
     const storedUser = localStorage.getItem("voylme-user");
 
@@ -137,8 +578,11 @@ export default function Header({
       setLanguage(storedLanguage);
     }
 
-    if (storedCurrency === "AED" || storedCurrency === "USD") {
-      setCurrency(storedCurrency);
+    if (
+      storedCurrency &&
+      validCurrencyCodes.has(storedCurrency as CurrencyCode)
+    ) {
+      setCurrency(storedCurrency as CurrencyCode);
     }
 
     setIsSignedIn(Boolean(storedUser));
@@ -241,7 +685,7 @@ export default function Header({
               aria-label={isArabic ? "اختيار اللغة" : "Select language"}
               aria-expanded={openPanel === "language"}
               onClick={() => togglePanel("language")}
-              className="flex h-10 min-w-[50px] items-center justify-center gap-1 rounded-full border border-white/25 bg-white/10 px-2 text-white transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] sm:h-11 sm:min-w-[66px] sm:px-3"
+              className="flex h-10 min-w-[54px] items-center justify-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-2 text-white transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] sm:h-11 sm:min-w-[70px] sm:px-3"
             >
               <Image
                 src="/assets/icons/header/icon-language.png"
@@ -251,18 +695,18 @@ export default function Header({
                 className="h-[21px] w-[21px] object-contain sm:h-6 sm:w-6"
               />
 
-              <span className="hidden text-[12px] font-extrabold sm:inline">
+              <span className="text-[11px] font-black sm:text-[12px]">
                 {language === "ar" ? "AR" : "EN"}
               </span>
             </button>
 
             {openPanel === "language" && (
               <div
-                className="absolute right-0 top-[48px] z-[5100] w-[210px] overflow-hidden rounded-2xl border border-gray-200 bg-white p-2 shadow-2xl sm:top-[52px]"
+                className="absolute right-0 top-[48px] z-[5100] w-[150px] overflow-hidden rounded-xl border border-[#660033] bg-[rgba(255,240,247,0.96)] p-1.5 shadow-[0_18px_50px_rgba(76,0,38,0.24)] backdrop-blur-md sm:top-[52px]"
                 dir={isArabic ? "rtl" : "ltr"}
               >
-                <p className="px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400">
-                  {isArabic ? "اختر اللغة" : "Select language"}
+                <p className="px-2.5 py-2 text-[10px] font-black uppercase tracking-[0.1em] text-[#660033]/60">
+                  {isArabic ? "اختر اللغة" : "Language"}
                 </p>
 
                 {languages.map((item) => {
@@ -273,23 +717,14 @@ export default function Header({
                       key={item.code}
                       type="button"
                       onClick={() => changeLanguage(item.code)}
-                      className={`flex w-full items-center justify-between rounded-xl px-3 py-3 text-sm transition ${
+                      className={`flex w-full items-center justify-between rounded-lg px-2.5 py-2 text-xs font-extrabold transition ${
                         selected
-                          ? "bg-[#660033]/10 font-extrabold text-[#660033]"
-                          : "font-semibold text-gray-700 hover:bg-gray-50"
+                          ? "bg-[#660033] text-white"
+                          : "text-[#660033] hover:bg-[#660033]/10"
                       }`}
                     >
                       <span>{item.nativeLabel}</span>
-
-                      <span
-                        className={`flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-[11px] font-black ${
-                          selected
-                            ? "bg-[#660033] text-white"
-                            : "bg-gray-100 text-gray-500"
-                        }`}
-                      >
-                        {item.shortLabel}
-                      </span>
+                      <span>{item.shortLabel}</span>
                     </button>
                   );
                 })}
@@ -303,70 +738,94 @@ export default function Header({
               aria-label={isArabic ? "اختيار العملة" : "Select currency"}
               aria-expanded={openPanel === "currency"}
               onClick={() => togglePanel("currency")}
-              className="flex h-10 min-w-[50px] items-center justify-center gap-1 rounded-full border border-white/25 bg-white/10 px-2 text-white transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] sm:h-11 sm:min-w-[76px] sm:px-3"
+              className="flex h-10 min-w-[72px] items-center justify-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-2.5 text-white transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-[#D4AF37] sm:h-11 sm:min-w-[84px] sm:px-3"
             >
-              <Image
-                src={selectedCurrency.icon}
-                alt=""
-                width={24}
-                height={24}
-                className="h-[22px] w-[22px] object-contain sm:h-6 sm:w-6"
-              />
+              <span className="text-[11px] font-black sm:text-[12px]">
+                {selectedCurrency.code}
+              </span>
 
-              <span className="hidden text-[12px] font-extrabold sm:inline">
-                {currency}
+              <span
+                aria-hidden="true"
+                className="text-[17px] leading-none sm:text-[19px]"
+              >
+                {selectedCurrency.flag}
               </span>
             </button>
 
             {openPanel === "currency" && (
               <div
-                className="absolute right-0 top-[48px] z-[5100] w-[230px] overflow-hidden rounded-2xl border border-gray-200 bg-white p-2 shadow-2xl sm:top-[52px]"
-                dir={isArabic ? "rtl" : "ltr"}
+                className="absolute right-0 top-[48px] z-[5100] w-[176px] overflow-hidden rounded-xl border border-[#660033] bg-[rgba(255,240,247,0.96)] shadow-[0_18px_50px_rgba(76,0,38,0.26)] backdrop-blur-md sm:top-[52px] sm:w-[188px]"
+                dir="ltr"
               >
-                <p className="px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400">
-                  {isArabic ? "اختر العملة" : "Select currency"}
-                </p>
+                <div className="border-b border-[#660033]/15 px-3 py-2.5">
+                  <p
+                    className="text-[10px] font-black uppercase tracking-[0.1em] text-[#660033]/65"
+                    dir={isArabic ? "rtl" : "ltr"}
+                  >
+                    {isArabic ? "اختر العملة" : "Select currency"}
+                  </p>
+                </div>
 
-                {currencies.map((item) => {
-                  const selected = item.code === currency;
+                <div
+                  className="max-h-[420px] overflow-y-auto overscroll-contain px-1.5 pb-2 pt-1 scroll-smooth"
+                  style={{
+                    WebkitOverflowScrolling: "touch",
+                    scrollbarWidth: "thin",
+                    scrollbarColor: "#660033 transparent",
+                  }}
+                >
+                  {currencyGroups.map((group) => {
+                    const groupCurrencies = currencies.filter(
+                      (item) => item.group === group.id,
+                    );
 
-                  return (
-                    <button
-                      key={item.code}
-                      type="button"
-                      onClick={() => changeCurrency(item.code)}
-                      className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm transition ${
-                        selected
-                          ? "bg-[#660033]/10 text-[#660033]"
-                          : "text-gray-700 hover:bg-gray-50"
-                      }`}
-                    >
-                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-50">
-                        <Image
-                          src={item.icon}
-                          alt=""
-                          width={27}
-                          height={27}
-                          className="h-[27px] w-[27px] object-contain"
-                        />
-                      </span>
+                    if (groupCurrencies.length === 0) {
+                      return null;
+                    }
 
-                      <span className="min-w-0 flex-1 text-start">
-                        <span className="block font-extrabold">
-                          {item.code}
-                        </span>
+                    return (
+                      <section key={group.id} className="pt-1">
+                        <p
+                          className="sticky top-0 z-10 bg-[rgba(255,240,247,0.96)] px-2 py-1.5 text-[9px] font-black uppercase tracking-[0.09em] text-[#660033]/55 backdrop-blur-md"
+                          dir={isArabic ? "rtl" : "ltr"}
+                        >
+                          {isArabic ? group.labelAr : group.labelEn}
+                        </p>
 
-                        <span className="block truncate text-[11px] font-medium text-gray-500">
-                          {item.label}
-                        </span>
-                      </span>
+                        <div className="space-y-0.5">
+                          {groupCurrencies.map((item) => {
+                            const selected = item.code === currency;
 
-                      {selected && (
-                        <span className="h-2.5 w-2.5 rounded-full bg-[#D4AF37]" />
-                      )}
-                    </button>
-                  );
-                })}
+                            return (
+                              <button
+                                key={item.code}
+                                type="button"
+                                title={item.label}
+                                onClick={() => changeCurrency(item.code)}
+                                className={`flex h-9 w-full items-center justify-between rounded-lg px-2.5 text-xs transition ${
+                                  selected
+                                    ? "bg-[#660033] text-white shadow-sm"
+                                    : "text-[#660033] hover:bg-[#660033]/10"
+                                }`}
+                              >
+                                <span className="font-black tracking-[0.03em]">
+                                  {item.code}
+                                </span>
+
+                                <span
+                                  aria-hidden="true"
+                                  className="text-[18px] leading-none"
+                                >
+                                  {item.flag}
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </section>
+                    );
+                  })}
+                </div>
               </div>
             )}
           </div>
