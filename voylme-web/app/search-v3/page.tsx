@@ -2,15 +2,20 @@
 
 import { useEffect, useState } from "react";
 
-import Header from "@/components/homepage-v3/Header";
-import Hero from "@/components/homepage-v3/Hero";
-import Services from "@/components/homepage-v3/Services";
-import SearchForm from "@/components/homepage-v3/SearchForm";
-import Offers from "@/components/homepage-v3/Offers";
+import Header from "@/components/homepage-clean/Header";
+import Hero from "@/components/homepage-clean/Hero";
+import Services from "@/components/homepage-clean/Services";
+import SearchForm from "@/components/homepage-clean/SearchForm";
+import Offers from "@/components/homepage-clean/Offers";
+import WhyVoylme from "@/components/homepage-clean/WhyVoylme";
+import PopularDestinations from "@/components/homepage-clean/PopularDestinations";
+import TravelPartners from "@/components/homepage-clean/TravelPartners";
+import AppDownload from "@/components/homepage-clean/AppDownload";
+import Footer from "@/components/homepage-clean/Footer";
 import {
   type V3Currency,
   type V3Language,
-} from "@/components/homepage-v3/content";
+} from "@/components/homepage-clean/content";
 
 const LANGUAGE_KEY = "voylme-language";
 const CURRENCY_KEY = "voylme-currency";
@@ -74,7 +79,8 @@ export default function SearchV3Page() {
         <div className="v3-loading-mark">
           VOYLME
         </div>
-      </main>
+        <Footer language={language} currency={currency} />
+</main>
     );
   }
 
@@ -95,6 +101,11 @@ export default function SearchV3Page() {
       <Services language={language} />
       <SearchForm language={language} />
       <Offers language={language} />
+      <WhyVoylme language={language} />
+      <PopularDestinations language={language} />
+      <TravelPartners language={language} />
+      <AppDownload language={language} />
+      <Footer language={language} currency={currency} />
     </main>
   );
 }
