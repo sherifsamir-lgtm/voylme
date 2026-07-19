@@ -225,7 +225,7 @@ export default function Header({
           className="relative flex min-w-0 shrink items-center"
         >
           <Image
-            src="/assets/brand/logo-voylme.png"
+            src="/assets/brand/logo-voylme-white.png"
             alt="VOYLME"
             width={270}
             height={86}
